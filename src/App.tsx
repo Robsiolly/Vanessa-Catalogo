@@ -3,12 +3,355 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect, useRef } from 'react';
+import * as React from 'react';
+import { useState, useEffect, useRef, MouseEvent } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'motion/react';
-import { ChevronDown, ChevronUp, ShieldCheck, Sparkles, Clock, Users } from 'lucide-react';
+import { 
+  ChevronDown, 
+  ChevronUp, 
+  ShieldCheck, 
+  Sparkles, 
+  Clock, 
+  Users,
+  ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
+  Dumbbell,
+  CheckCircle2,
+  ArrowRight
+} from 'lucide-react';
+
+// --- Types ---
+type Page = "catalog" | "gym-cleaning";
 
 // --- Components ---
 
+const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentTatameCard, setCurrentTatameCard] = useState(0);
+  
+  const slides = [
+    {
+      url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1200",
+      title: "Equipamentos Sempre Higienizados",
+      desc: "Limpeza técnica focada em áreas de contato intenso para garantir a segurança dos alunos."
+    },
+    {
+      url: "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&q=80&w=1200",
+      title: "Tatames e Áreas Funcionais",
+      desc: "Processo antibacteriano profissional que elimina riscos biológicos em superfícies porosas."
+    },
+    {
+      url: "https://images.unsplash.com/photo-1593079831268-3381b0db4a77?auto=format&fit=crop&q=80&w=1200",
+      title: "Tratamento Especializado de Pisos",
+      desc: "Proteção e conservação com acabamento premium para pisos vinílicos e emborrachados."
+    },
+    {
+      url: "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&q=80&w=1200",
+      title: "Preparação Pré e Pós-Obra",
+      desc: "Limpeza profunda para inaugurações ou reformas, entregando a academia pronta para uso."
+    }
+  ];
+
+  const tatameCards = [
+    {
+      title: "Tatames Verdadeiramente Higienizados",
+      text: "Ambientes esportivos acumulam microrganismos invisíveis. Nossa higienização profissional reduz riscos e eleva o padrão sanitário do espaço."
+    },
+    {
+      title: "Limpeza Técnica Especializada",
+      text: "Aplicação controlada de produtos e equipamentos adequados para limpeza profunda sem desgaste do tatame."
+    },
+    {
+      title: "Mais Saúde no Ambiente de Treino",
+      text: "Eliminação de odores, fungos e bactérias responsáveis por contaminações comuns em áreas esportivas."
+    },
+    {
+      title: "Padrão Profissional Haja Clean",
+      text: "Resultado visível, acabamento uniforme e sensação real de ambiente renovado."
+    }
+  ];
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+
+  const nextTatame = () => setCurrentTatameCard((prev) => (prev + 1) % tatameCards.length);
+  const prevTatame = () => setCurrentTatameCard((prev) => (prev - 1 + tatameCards.length) % tatameCards.length);
+
+  // Parallax Effect for Image
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    setRotateX((y - centerY) / 25);
+    setRotateY((centerX - x) / 25);
+  };
+
+  const handleMouseLeave = () => {
+    setRotateX(0);
+    setRotateY(0);
+  };
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[200] bg-[#f8f9fa] flex flex-col overflow-y-auto overflow-x-hidden"
+    >
+      {/* Header Editorial */}
+      <header className="sticky top-0 w-full h-20 px-6 md:px-12 flex items-center justify-between bg-white/80 backdrop-blur-lg border-b border-gray-200 z-50">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center border border-gray-100">
+            <svg viewBox="0 0 120 120" className="w-8 h-8">
+              <text x="10" y="85" className="fill-[#137067]" style={{ fontFamily: 'serif', fontWeight: 'bold', fontSize: '85px' }}>H</text>
+              <text x="45" y="85" className="fill-[#e67e22]" style={{ fontFamily: 'serif', fontWeight: 'bold', fontSize: '85px' }}>C</text>
+            </svg>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-sm font-bold text-gray-900 leading-none">Haja Clean</span>
+            <span className="text-[8px] uppercase tracking-widest text-[#137067] font-bold">Facilities</span>
+          </div>
+        </div>
+        
+        <button 
+          onClick={onBack}
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors text-sm font-medium shadow-sm pointer-events-auto"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Voltar ao Catálogo
+        </button>
+      </header>
+
+      {/* Main Content Area */}
+      <div className="flex-1">
+        {/* Block 1: Intro & Main Carousel */}
+        <section className="min-h-[calc(100vh-80px)] flex flex-col lg:flex-row overflow-hidden border-b border-gray-100">
+          {/* Left Column: Text Content */}
+          <div className="w-full lg:w-[45%] p-8 md:p-16 lg:p-24 flex flex-col justify-center bg-white z-10">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+            >
+              <div className="flex items-center gap-2 text-brand-teal mb-6">
+                <Dumbbell className="w-5 h-5" />
+                <span className="text-xs font-bold uppercase tracking-[0.3em]">Serviço Especializado</span>
+              </div>
+              
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gray-900 leading-tight mb-8">
+                Limpeza Profissional <br />
+                <span className="text-brand-teal">para Academias</span>
+              </h1>
+              
+              <p className="text-lg text-gray-600 leading-relaxed mb-10 font-light">
+                A Haja Clean Facilities oferece soluções completas de higienização para academias, 
+                garantindo segurança, saúde e excelência operacional para seus alunos e colaboradores.
+              </p>
+
+              <ul className="space-y-4">
+                {[
+                  "Limpeza geral de equipamentos",
+                  "Higienização de tatames",
+                  "Tratamento de pisos",
+                  "Limpeza pré e pós-obra",
+                  "Sanitização de áreas de alto contato"
+                ].map((item, i) => (
+                  <motion.li 
+                    key={i}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.4 + (i * 0.1) }}
+                    className="flex items-center gap-3 text-gray-700 font-medium"
+                  >
+                    <CheckCircle2 className="w-5 h-5 text-brand-teal" />
+                    {item}
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+
+          {/* Right Column: Interactive Carousel */}
+          <div className="w-full lg:w-[55%] relative bg-gray-100 overflow-hidden min-h-[400px] lg:min-h-0">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide}
+                initial={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute inset-0"
+              >
+                <img 
+                  src={slides[currentSlide].url} 
+                  alt={slides[currentSlide].title}
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                
+                {/* Slide Content Overlay */}
+                <div className="absolute bottom-12 left-12 right-12 text-white">
+                  <motion.h3 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="text-2xl md:text-3xl font-bold mb-2"
+                  >
+                    {slides[currentSlide].title}
+                  </motion.h3>
+                  <motion.p 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="text-white/80 text-lg font-light max-w-lg"
+                  >
+                    {slides[currentSlide].desc}
+                  </motion.p>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Carousel Controls */}
+            <div className="absolute bottom-12 right-12 flex items-center gap-4 z-20">
+              <div className="hidden sm:flex gap-2 mr-4">
+                {slides.map((_, i) => (
+                  <div 
+                    key={i}
+                    className={`h-1 transition-all duration-500 rounded-full ${i === currentSlide ? "w-8 bg-white" : "w-2 bg-white/30"}`}
+                  />
+                ))}
+              </div>
+              
+              <button 
+                onClick={prevSlide}
+                className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button 
+                onClick={nextSlide}
+                className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Block 2: Limpeza Profissional de Tatames */}
+        <section className="min-h-screen w-full flex flex-col lg:flex-row bg-[#f8f9fa] py-16 md:py-24 px-6 md:px-12 lg:px-24 gap-12 lg:gap-24 items-center">
+          {/* Left Side: Container for Image + Badge */}
+          <div className="w-full lg:w-1/2 relative">
+            {/* Image Container */}
+            <div className="relative min-h-[400px] flex items-center justify-center bg-gray-100 rounded-[2rem] overflow-hidden shadow-2xl">
+              <img 
+                src="https://storage.googleapis.com/pigeon-vop-public/rndzaxhtei4afeu5dcphw4/1743942903038-tatame-cleaning.jpg" 
+                alt="Limpeza Profissional de Tatames"
+                className="absolute inset-0 w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+                loading="eager"
+              />
+              <div className="absolute inset-0 bg-gradient-to-tr from-brand-teal/5 to-transparent pointer-events-none" />
+            </div>
+            
+            {/* Floating Badge */}
+            <div className="absolute -bottom-6 -right-6 bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-white hidden md:block z-10">
+              <ShieldCheck className="w-8 h-8 text-brand-teal mb-2" />
+              <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 block">Autenticidade</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-brand-teal">Haja Clean</span>
+            </div>
+          </div>
+
+          {/* Right Side: 3D Interactive Cards */}
+          <div className="w-full lg:w-1/2 flex flex-col">
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="mb-12"
+            >
+              <h2 className="text-3xl md:text-5xl font-display font-bold text-gray-900 mb-6">
+                Limpeza Profissional <br />
+                <span className="text-brand-teal">de Tatames</span>
+              </h2>
+              <p className="text-gray-600 leading-relaxed font-light text-lg">
+                Os tatames são áreas de contato direto e intenso, exigindo um nível superior de higienização. 
+                A Haja Clean Facilities aplica técnicas especializadas que eliminam bactérias, odores e impurezas 
+                sem comprometer a estrutura do material, garantindo segurança e desempenho para atletas e alunos.
+              </p>
+            </motion.div>
+
+            {/* 3D Card Container */}
+            <div className="relative perspective-1000 min-h-[320px] flex items-center justify-center">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentTatameCard}
+                  initial={{ opacity: 0, rotateY: 30, x: 40, filter: "blur(8px)" }}
+                  animate={{ opacity: 1, rotateY: 0, x: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, rotateY: -30, x: -40, filter: "blur(8px)" }}
+                  whileHover={{ rotateY: 8, rotateX: -3, scale: 1.03 }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  onDragEnd={(_, info) => {
+                    if (info.offset.x > 50) prevTatame();
+                    if (info.offset.x < -50) nextTatame();
+                  }}
+                  className="w-full bg-white/40 backdrop-blur-2xl p-8 md:p-12 rounded-[2.5rem] border border-white/60 shadow-[0_30px_60px_rgba(0,0,0,0.03)] cursor-grab active:cursor-grabbing"
+                >
+                  <div className="w-14 h-14 rounded-2xl bg-brand-teal/10 flex items-center justify-center mb-8">
+                    <Sparkles className="w-7 h-7 text-brand-teal" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                    {tatameCards[currentTatameCard].title}
+                  </h3>
+                  <p className="text-gray-600 text-lg leading-relaxed font-light">
+                    {tatameCards[currentTatameCard].text}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Card Navigation */}
+              <div className="absolute -bottom-20 left-0 right-0 flex items-center justify-between px-4">
+                <div className="flex gap-2">
+                  {tatameCards.map((_, i) => (
+                    <div 
+                      key={i}
+                      className={`h-1.5 rounded-full transition-all duration-700 ${i === currentTatameCard ? "w-10 bg-brand-teal" : "w-2 bg-gray-200"}`}
+                    />
+                  ))}
+                </div>
+                <div className="flex gap-4">
+                  <button 
+                    onClick={prevTatame}
+                    className="w-12 h-12 rounded-full bg-white border border-gray-100 flex items-center justify-center text-gray-400 hover:text-brand-teal hover:border-brand-teal transition-all shadow-sm group"
+                  >
+                    <ChevronLeft className="w-6 h-6 group-active:scale-90 transition-transform" />
+                  </button>
+                  <button 
+                    onClick={nextTatame}
+                    className="w-12 h-12 rounded-full bg-white border border-gray-100 flex items-center justify-center text-gray-400 hover:text-brand-teal hover:border-brand-teal transition-all shadow-sm group"
+                  >
+                    <ChevronRight className="w-6 h-6 group-active:scale-90 transition-transform" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </motion.div>
+  );
+};
 const Header = ({ scrollYProgress }: { scrollYProgress: any }) => {
   // Transição de posição otimizada para o novo tamanho menor
   const x = useTransform(scrollYProgress, [0.1, 0.4], ["0%", "calc(100vw - 280px)"]);
@@ -150,24 +493,22 @@ const AboutSection = ({ scrollYProgress, onNext, onPrev }: { scrollYProgress: an
           Não entregamos apenas serviços; entregamos tranquilidade e valorização patrimonial através de uma gestão impecável.
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
-          <motion.button
-            onClick={onNext}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-white/90 backdrop-blur-md px-8 py-4 md:px-10 md:py-5 rounded-full flex items-center gap-3 group shadow-2xl border-2 border-brand-teal/30"
-          >
-            <span className="font-bold text-premium-dark">Ver Serviços</span>
-            <ChevronDown className="w-5 h-5 text-brand-teal group-hover:translate-y-1 transition-transform" />
-          </motion.button>
-          
+        <div className="flex items-center justify-center gap-4">
           <motion.button
             onClick={onPrev}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 md:px-10 md:py-5 rounded-full bg-white/10 text-white font-bold hover:bg-white/20 transition-all border border-white/20"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-all"
           >
-            Voltar
+            <ChevronUp className="w-6 h-6" />
+          </motion.button>
+          <motion.button
+            onClick={onNext}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-all"
+          >
+            <ChevronDown className="w-6 h-6" />
           </motion.button>
         </div>
       </motion.div>
@@ -225,6 +566,7 @@ const ServicesSection = ({ scrollYProgress, onPrev }: { scrollYProgress: any, on
 };
 
 export default function App() {
+  const [currentPage, setCurrentPage] = useState<Page>("catalog");
   const { scrollYProgress } = useScroll();
 
   const scrollToSection = (index: number) => {
@@ -235,26 +577,42 @@ export default function App() {
   };
   
   return (
-    <div className="relative bg-premium-gray">
-      <Header scrollYProgress={scrollYProgress} />
-      
-      <main className="relative">
-        <HeroSection scrollYProgress={scrollYProgress} onNext={() => scrollToSection(1)} />
-        <AboutSection scrollYProgress={scrollYProgress} onNext={() => scrollToSection(2)} onPrev={() => scrollToSection(0)} />
-        <ServicesSection scrollYProgress={scrollYProgress} onPrev={() => scrollToSection(0)} />
-      </main>
+    <div className="relative bg-premium-gray font-sans selection:bg-brand-teal/30 selection:text-premium-dark">
+      {currentPage === "catalog" ? (
+        <div key="catalog">
+          {/* Botão de Academias Fixo no Topo Direito */}
+          <button
+            onClick={() => setCurrentPage("gym-cleaning")}
+            className="fixed top-6 right-6 z-[110] bg-white/40 backdrop-blur-xl px-4 py-2 rounded-full border border-white/40 shadow-xl flex items-center gap-2 hover:bg-white/60 transition-all group"
+          >
+            <Dumbbell className="w-3 h-3 text-brand-teal" />
+            <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-premium-dark">Academias</span>
+          </button>
 
-      {/* Cinematic Transition Overlay */}
-      <AnimatePresence>
-        {/* This could be used for specific transition effects between sections */}
-      </AnimatePresence>
+          <Header scrollYProgress={scrollYProgress} />
+          
+          <main className="relative">
+            <HeroSection scrollYProgress={scrollYProgress} onNext={() => scrollToSection(1)} />
+            <AboutSection 
+              scrollYProgress={scrollYProgress} 
+              onNext={() => scrollToSection(2)} 
+              onPrev={() => scrollToSection(0)} 
+            />
+            <ServicesSection scrollYProgress={scrollYProgress} onPrev={() => scrollToSection(0)} />
+          </main>
 
-      {/* Footer / Copyright */}
-      <footer className="py-12 px-6 text-center border-t border-premium-dark/5 relative z-10 bg-premium-gray">
-        <p className="text-xs text-premium-dark/40 tracking-widest uppercase">
-          © 2026 Haja Clean Facilities Services. Todos os direitos reservados.
-        </p>
-      </footer>
+          {/* Footer / Copyright */}
+          <footer className="py-12 px-6 text-center border-t border-premium-dark/5 relative z-10 bg-premium-gray">
+            <p className="text-xs text-premium-dark/40 tracking-widest uppercase">
+              © 2026 Haja Clean Facilities Services. Todos os direitos reservados.
+            </p>
+          </footer>
+        </div>
+      ) : (
+        <GymCleaningPage 
+          onBack={() => setCurrentPage("catalog")} 
+        />
+      )}
     </div>
   );
 }
