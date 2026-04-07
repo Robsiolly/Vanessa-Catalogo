@@ -30,6 +30,10 @@
   @apply bg-black/20 backdrop-blur-xl border border-white/10 shadow-2xl;
 }
 
+.perspective-1000 {
+  perspective: 1000px;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

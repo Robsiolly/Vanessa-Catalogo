@@ -5,7 +5,7 @@
 
 import * as React from 'react';
 import { useState, useEffect, useRef, MouseEvent } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   ChevronDown, 
   ChevronUp, 
@@ -18,7 +18,10 @@ import {
   ChevronRight,
   Dumbbell,
   CheckCircle2,
-  ArrowRight
+  ArrowRight,
+  Target,
+  Award,
+  Handshake
 } from 'lucide-react';
 
 // --- Types ---
@@ -32,24 +35,9 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   
   const slides = [
     {
-      url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1200",
-      title: "Equipamentos Sempre Higienizados",
-      desc: "Limpeza técnica focada em áreas de contato intenso para garantir a segurança dos alunos."
-    },
-    {
-      url: "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&q=80&w=1200",
-      title: "Tatames e Áreas Funcionais",
+      url: "/tatames.jpeg",
+      title: "Limpeza Profissional de Tatames",
       desc: "Processo antibacteriano profissional que elimina riscos biológicos em superfícies porosas."
-    },
-    {
-      url: "https://images.unsplash.com/photo-1593079831268-3381b0db4a77?auto=format&fit=crop&q=80&w=1200",
-      title: "Tratamento Especializado de Pisos",
-      desc: "Proteção e conservação com acabamento premium para pisos vinílicos e emborrachados."
-    },
-    {
-      url: "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&q=80&w=1200",
-      title: "Preparação Pré e Pós-Obra",
-      desc: "Limpeza profunda para inaugurações ou reformas, entregando a academia pronta para uso."
     }
   ];
 
@@ -110,11 +98,11 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           <div className="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center border border-gray-100">
             <svg viewBox="0 0 120 120" className="w-8 h-8">
               <text x="10" y="85" className="fill-[#137067]" style={{ fontFamily: 'serif', fontWeight: 'bold', fontSize: '85px' }}>H</text>
-              <text x="45" y="85" className="fill-[#e67e22]" style={{ fontFamily: 'serif', fontWeight: 'bold', fontSize: '85px' }}>C</text>
+              <text x="45" y="85" className="fill-brand-coral" style={{ fontFamily: 'serif', fontWeight: 'bold', fontSize: '85px' }}>C</text>
             </svg>
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-bold text-gray-900 leading-none">Haja Clean</span>
+            <span className="text-sm font-bold text-brand-coral leading-none">Haja Clean</span>
             <span className="text-[8px] uppercase tracking-widest text-[#137067] font-bold">Facilities</span>
           </div>
         </div>
@@ -145,7 +133,7 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 <span className="text-xs font-bold uppercase tracking-[0.3em]">Serviço Especializado</span>
               </div>
               
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gray-900 leading-tight mb-8">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-black leading-tight mb-8">
                 Limpeza Profissional <br />
                 <span className="text-brand-teal">para Academias</span>
               </h1>
@@ -251,23 +239,25 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         <section className="min-h-screen w-full flex flex-col lg:flex-row bg-[#f8f9fa] py-16 md:py-24 px-6 md:px-12 lg:px-24 gap-12 lg:gap-24 items-center">
           {/* Left Side: Container for Image + Badge */}
           <div className="w-full lg:w-1/2 relative">
-            {/* Image Container */}
-            <div className="relative min-h-[400px] flex items-center justify-center bg-gray-100 rounded-[2rem] overflow-hidden shadow-2xl">
+            {/* Image Container using local file for 100% reliability */}
+            <div className="relative min-h-[500px] lg:min-h-[650px] w-full bg-gray-100 rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.12)]">
               <img 
-                src="https://storage.googleapis.com/pigeon-vop-public/rndzaxhtei4afeu5dcphw4/1743942903038-tatame-cleaning.jpg" 
-                alt="Limpeza Profissional de Tatames"
+                src="/tatames.jpeg" 
+                alt="Limpeza Profissional de Tatames Haja Clean"
                 className="absolute inset-0 w-full h-full object-cover"
                 referrerPolicy="no-referrer"
                 loading="eager"
               />
-              <div className="absolute inset-0 bg-gradient-to-tr from-brand-teal/5 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-brand-teal/10 to-transparent pointer-events-none" />
             </div>
             
             {/* Floating Badge */}
-            <div className="absolute -bottom-6 -right-6 bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-white hidden md:block z-10">
-              <ShieldCheck className="w-8 h-8 text-brand-teal mb-2" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 block">Autenticidade</span>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-brand-teal">Haja Clean</span>
+            <div className="absolute -bottom-8 -right-8 bg-white p-8 rounded-3xl shadow-2xl border border-gray-100 hidden md:flex flex-col items-center z-20">
+              <ShieldCheck className="w-10 h-10 text-brand-teal mb-2" />
+              <div className="text-center">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 block mb-1">Qualidade</span>
+                <span className="text-xs font-black uppercase tracking-[0.1em] text-brand-teal">Haja Clean</span>
+              </div>
             </div>
           </div>
 
@@ -279,7 +269,7 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
               viewport={{ once: true }}
               className="mb-12"
             >
-              <h2 className="text-3xl md:text-5xl font-display font-bold text-gray-900 mb-6">
+              <h2 className="text-3xl md:text-5xl font-display font-bold text-black mb-6">
                 Limpeza Profissional <br />
                 <span className="text-brand-teal">de Tatames</span>
               </h2>
@@ -311,7 +301,7 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                   <div className="w-14 h-14 rounded-2xl bg-brand-teal/10 flex items-center justify-center mb-8">
                     <Sparkles className="w-7 h-7 text-brand-teal" />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  <h3 className="text-2xl font-bold text-black mb-4">
                     {tatameCards[currentTatameCard].title}
                   </h3>
                   <p className="text-gray-600 text-lg leading-relaxed font-light">
@@ -352,21 +342,12 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     </motion.div>
   );
 };
-const Header = ({ scrollYProgress }: { scrollYProgress: any }) => {
-  // Transição de posição otimizada para o novo tamanho menor
-  const x = useTransform(scrollYProgress, [0.1, 0.4], ["0%", "calc(100vw - 280px)"]);
-  const y = useTransform(scrollYProgress, [0.1, 0.4], ["0px", "calc(100vh - 120px)"]);
-  
-  const scale = useTransform(scrollYProgress, [0.1, 0.25, 0.4], [1, 1.05, 1]);
-
+const Header = () => {
   return (
-    <motion.header 
-      style={{ x, y, scale }}
-      className="fixed top-0 left-0 z-[100] p-4 md:p-6 flex items-center pointer-events-none"
-    >
-      {/* Card com Efeito Vidro 3D */}
-      <div className="flex items-center gap-2 md:gap-3 pointer-events-auto bg-white/40 backdrop-blur-2xl px-3 py-1.5 md:px-4 md:py-2 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.1),inset_0_0_20px_rgba(255,255,255,0.5)] border border-white/40 ring-1 ring-brand-teal/10">
-        <div className="relative w-10 h-10 md:w-12 md:h-12 flex items-center justify-center">
+    <header className="fixed top-0 left-0 z-[100] p-4 md:p-8 flex items-center">
+      {/* Card com Efeito Vidro 3D - Fixo no Topo Esquerdo */}
+      <div className="flex items-center gap-2 md:gap-4 bg-white/60 backdrop-blur-2xl px-4 py-2 md:px-6 md:py-3 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/40 ring-1 ring-brand-teal/5">
+        <div className="relative w-10 h-10 md:w-14 md:h-14 flex items-center justify-center">
           <svg viewBox="0 0 120 120" className="w-full h-full drop-shadow-md">
             <text x="10" y="85" className="fill-brand-teal" style={{ fontFamily: 'serif', fontWeight: 'bold', fontSize: '85px' }}>H</text>
             <text x="45" y="85" className="fill-brand-coral" style={{ fontFamily: 'serif', fontWeight: 'bold', fontSize: '85px' }}>C</text>
@@ -375,191 +356,336 @@ const Header = ({ scrollYProgress }: { scrollYProgress: any }) => {
           </svg>
         </div>
         <div className="flex flex-col">
-          <h1 className="text-sm md:text-lg font-display font-bold tracking-tight text-premium-dark leading-none">
+          <h1 className="text-base md:text-xl font-display font-bold tracking-tight text-brand-coral leading-none">
             Haja Clean
           </h1>
-          <span className="text-[7px] md:text-[10px] uppercase tracking-[0.2em] text-brand-teal font-bold">
+          <span className="text-[8px] md:text-[12px] uppercase tracking-[0.3em] text-brand-teal font-bold mt-1">
             Facilities Services
           </span>
         </div>
       </div>
-    </motion.header>
+    </header>
   );
 };
 
-const HeroSection = ({ scrollYProgress, onNext }: { scrollYProgress: any, onNext: () => void }) => {
-  // Efeitos cinematográficos baseados no scroll
-  const y = useTransform(scrollYProgress, [0, 0.5], [0, 300]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 1.2]);
-  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
-
-  return (
-    <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
-      {/* Background Metálico com Degradê de 3 Tons */}
-      <motion.div 
-        style={{ y, scale }}
-        className="absolute inset-0 z-0 bg-white"
-      >
-        {/* Camada 1: Degradê Base (Branco -> Cinza -> Verde) */}
-        <div className="absolute inset-0 bg-[linear-gradient(135deg,#ffffff_0%,#d1d5db_45%,#137067_100%)] opacity-80" />
-        
-        {/* Camada 2: Brilho Metálico (Simula reflexo de metal) */}
-        <div className="absolute inset-0 bg-[linear-gradient(105deg,transparent_30%,rgba(255,255,255,0.8)_45%,rgba(255,255,255,0.8)_50%,transparent_65%)] mix-blend-overlay" />
-        
-        {/* Camada 3: Textura de Alumínio Escovado */}
-        <div className="absolute inset-0 opacity-20 mix-blend-multiply bg-[url('https://www.transparenttextures.com/patterns/brushed-alum.png')]" />
-        
-        {/* Camada 4: Vinheta Suave para Foco Central */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.05)_100%)]" />
-      </motion.div>
-
-      {/* Content */}
-      <motion.div 
-        style={{ opacity }}
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
-        className="relative z-20 text-center px-6 max-w-4xl pt-16 md:pt-24"
-      >
-        <h2 className="text-4xl md:text-7xl lg:text-8xl font-display font-bold text-premium-dark tracking-tighter leading-tight mb-4 md:mb-6">
-          Excelência em <br />
-          <span className="text-brand-teal">Limpeza Profissional</span>
-        </h2>
-        <p className="text-base md:text-xl text-premium-dark/80 font-medium max-w-2xl mx-auto mb-6 md:mb-8 leading-relaxed">
-          Transformamos ambientes corporativos com sofisticação, tecnologia e o mais alto rigor técnico em facilities.
-        </p>
-
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
-          <motion.button
-            onClick={onNext}
-            whileHover={{ scale: 1.05, backgroundColor: "rgba(19, 112, 103, 0.2)" }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-white/90 backdrop-blur-md px-8 py-4 md:px-10 md:py-5 rounded-full flex items-center gap-3 group transition-all duration-500 shadow-2xl border-2 border-brand-teal/40"
-          >
-            <span className="font-bold tracking-wide text-premium-dark">Próxima Seção</span>
-            <ChevronDown className="w-5 h-5 text-brand-teal group-hover:translate-y-1 transition-transform" />
-          </motion.button>
-          
-          <motion.button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 md:px-10 md:py-5 rounded-full bg-premium-dark/10 text-premium-dark font-bold hover:bg-premium-dark/20 transition-all"
-          >
-            Início
-          </motion.button>
-        </div>
-      </motion.div>
-
-      <motion.div 
-        style={{ opacity }}
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
-      >
-        <div className="w-[1px] h-12 md:h-16 bg-gradient-to-b from-brand-teal to-transparent" />
-      </motion.div>
-    </section>
-  );
-};
-
-const AboutSection = ({ scrollYProgress, onNext, onPrev }: { scrollYProgress: any, onNext: () => void, onPrev: () => void }) => {
-  const yBg = useTransform(scrollYProgress, [0.2, 0.5], [-100, 0]);
-  const opacityContent = useTransform(scrollYProgress, [0.2, 0.35], [0, 1]);
-
-  return (
-    <section className="relative min-h-screen w-full py-16 md:py-24 px-6 flex flex-col items-center justify-center overflow-hidden bg-premium-dark">
-      <motion.div 
-        style={{ y: yBg }}
-        className="absolute inset-0 z-0"
-      >
-        <img 
-          src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1920" 
-          alt="Modern Corporate Office"
-          className="w-full h-full object-cover opacity-30"
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-premium-dark via-transparent to-premium-dark" />
-      </motion.div>
-
-      <motion.div 
-        style={{ opacity: opacityContent }}
-        className="relative z-20 max-w-[1200px] w-full text-center"
-      >
-        <h3 className="text-brand-teal font-medium tracking-[0.3em] uppercase text-[10px] md:text-sm mb-4">Nossa Identidade</h3>
-        <h2 className="text-3xl md:text-6xl font-display font-bold text-white mb-4 md:mb-6 leading-tight">Compromisso com a <br /> Perfeição Invisível</h2>
-        <p className="text-base md:text-lg text-white/70 max-w-3xl mx-auto leading-relaxed mb-6 md:mb-10">
-          A Haja Clean Facilities Services nasceu para redefinir o conceito de manutenção e limpeza. 
-          Não entregamos apenas serviços; entregamos tranquilidade e valorização patrimonial através de uma gestão impecável.
-        </p>
-
-        <div className="flex items-center justify-center gap-4">
-          <motion.button
-            onClick={onPrev}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-all"
-          >
-            <ChevronUp className="w-6 h-6" />
-          </motion.button>
-          <motion.button
-            onClick={onNext}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="w-12 h-12 md:w-14 md:h-14 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-all"
-          >
-            <ChevronDown className="w-6 h-6" />
-          </motion.button>
-        </div>
-      </motion.div>
-    </section>
-  );
-};
-
-const ServicesSection = ({ scrollYProgress, onPrev }: { scrollYProgress: any, onPrev: () => void }) => {
-  // Removidos efeitos de opacidade progressiva para leitura imediata
-  
+const HeroSection = ({ onNext }: { onNext: () => void }) => {
+  const [currentCard, setCurrentCard] = useState(0);
   const cards = [
-    { icon: <ShieldCheck className="w-6 h-6 md:w-8 md:h-8 text-brand-teal" />, title: "Rigor Técnico", desc: "Processos certificados e equipe altamente treinada para ambientes de alta complexidade." },
-    { icon: <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-brand-coral" />, title: "Tecnologia", desc: "Equipamentos de última geração e produtos sustentáveis de alta performance." },
-    { icon: <Clock className="w-6 h-6 md:w-8 md:h-8 text-brand-teal" />, title: "Eficiência", desc: "Gestão inteligente de cronogramas para garantir a continuidade do seu negócio." },
-    { icon: <Users className="w-6 h-6 md:w-8 md:h-8 text-brand-coral" />, title: "Personalização", desc: "Soluções sob medida para as necessidades específicas de cada infraestrutura." }
+    {
+      icon: <Target className="w-8 h-8 text-brand-teal" />,
+      title: "MISSÃO",
+      content: "Oferecer serviços de limpeza profissional com excelência, responsabilidade e alto padrão de qualidade, garantindo ambientes seguros."
+    },
+    {
+      icon: <Award className="w-8 h-8 text-brand-teal" />,
+      title: "VALORES",
+      content: "Profissionalismo, Transparência, Responsabilidade, Compromisso com o cliente e Qualidade contínua em cada detalhe."
+    },
+    {
+      icon: <Handshake className="w-8 h-8 text-brand-teal" />,
+      title: "COMPROMISSO",
+      content: "Atuamos com processos organizados e métodos profissionais que asseguram confiança e resultados consistentes para sua empresa."
+    }
   ];
 
+  const nextCard = () => setCurrentCard((prev) => (prev + 1) % cards.length);
+  const prevCard = () => setCurrentCard((prev) => (prev - 1 + cards.length) % cards.length);
+
   return (
-    <section className="relative min-h-screen w-full py-16 md:py-24 px-6 flex flex-col items-center justify-center bg-premium-gray overflow-hidden">
-      <div className="relative z-20 max-w-[1200px] w-full">
-        <div className="text-center mb-8 md:mb-12">
-          <h3 className="text-brand-teal font-medium tracking-[0.3em] uppercase text-[10px] md:text-sm mb-4">Especialidades</h3>
-          <h2 className="text-3xl md:text-6xl font-display font-bold text-premium-dark mb-6 md:mb-8">Soluções em Facilities</h2>
+    <section className="relative min-h-screen w-full overflow-y-auto flex flex-col items-start justify-start bg-[#f8f9fa] px-6 md:px-12 pt-[140px] md:pt-[200px] pb-32">
+      {/* Background Decorativo Corporativo */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_15%_15%,rgba(19,112,103,0.04)_0%,transparent_60%)]" />
+        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_85%_85%,rgba(19,112,103,0.04)_0%,transparent_60%)]" />
+      </div>
+
+      <div className="relative z-20 w-full max-w-7xl flex flex-col items-start">
+        {/* Header Institucional - Capa do Catálogo */}
+        <motion.div
+          initial={{ opacity: 0, y: 30, filter: "blur(15px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="text-left max-w-[900px] mb-12"
+        >
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-black tracking-tight mb-6 leading-[1.15]">
+            HAJA CLEAN
+            <span className="block mt-4">
+              <span className="text-brand-teal">Limpeza Especializada</span> para <br />
+              Academias e Studios
+            </span>
+          </h2>
+          <p className="text-lg md:text-xl text-premium-dark/60 font-medium leading-relaxed">
+            Higienização de alta performance para ambientes de treino, garantindo segurança e bem-estar para seus alunos.
+          </p>
+        </motion.div>
+
+        {/* Slider de Cards Institucionais */}
+        <div className="relative w-full max-w-[500px] mb-12 group">
+          <div className="overflow-hidden rounded-[2rem] bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_20px_40px_rgba(0,0,0,0.03)]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentCard}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.5, ease: "circOut" }}
+                className="p-8 md:p-10 flex flex-col items-start text-left"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-6 border border-gray-50">
+                  {cards[currentCard].icon}
+                </div>
+                
+                <h3 className="text-xs font-black tracking-[0.3em] text-brand-teal mb-4 uppercase">
+                  {cards[currentCard].title}
+                </h3>
+                
+                <p className="text-premium-dark/80 leading-relaxed text-sm md:text-base font-medium">
+                  {cards[currentCard].content}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Controles do Slider */}
+          <div className="flex items-center gap-4 mt-6">
+            <button 
+              onClick={prevCard}
+              className="p-3 rounded-full bg-white border border-gray-100 text-brand-teal hover:bg-brand-teal hover:text-white transition-all shadow-sm"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <div className="flex gap-2">
+              {cards.map((_, i) => (
+                <div 
+                  key={i}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${i === currentCard ? 'w-8 bg-brand-teal' : 'w-2 bg-gray-200'}`}
+                />
+              ))}
+            </div>
+            <button 
+              onClick={nextCard}
+              className="p-3 rounded-full bg-white border border-gray-100 text-brand-teal hover:bg-brand-teal hover:text-white transition-all shadow-sm"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-          {cards.map((card, index) => (
-            <div
-              key={index}
-              className="glass p-6 md:p-8 rounded-3xl flex flex-col gap-4 md:gap-6 border-premium-dark/5 shadow-md bg-white/60"
-            >
-              <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white flex items-center justify-center shadow-sm">
-                {card.icon}
-              </div>
-              <h4 className="text-lg md:text-xl font-display font-bold text-premium-dark">{card.title}</h4>
-              <p className="text-premium-dark/60 leading-relaxed text-xs md:text-sm">{card.desc}</p>
+        {/* Botão de Chamada - Estilo Premium Reduzido */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2 }}
+          className="flex flex-col items-start mt-4"
+        >
+          <motion.button
+            onClick={onNext}
+            whileHover={{ 
+              scale: 1.05, 
+              boxShadow: "0 0 30px rgba(19, 112, 103, 0.15)"
+            }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-brand-teal text-white px-8 py-3.5 rounded-full font-bold tracking-[0.15em] shadow-xl transition-all flex items-center gap-3 group"
+          >
+            <span className="uppercase text-xs">Conheça nossos serviços</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </motion.button>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+const AboutSection = ({ onNext, onPrev }: { onNext: () => void, onPrev: () => void }) => {
+  return (
+    <section className="relative min-h-screen w-full overflow-y-auto flex flex-col items-center justify-start bg-white px-6 md:px-12 pt-[140px] md:pt-[200px] pb-20">
+      <div className="relative z-10 w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h3 className="text-brand-teal font-medium tracking-[0.4em] uppercase text-xs md:text-sm mb-6 mt-10">Nossa Identidade</h3>
+          <h2 className="text-4xl md:text-6xl font-display font-bold text-black mb-8 leading-tight">
+            Compromisso com a <br />
+            <span className="text-brand-teal">Excelência</span>
+          </h2>
+          <div className="space-y-6 text-lg md:text-xl text-premium-dark/70 leading-relaxed">
+            <p>
+              A Haja Clean é especialista em higienização de alta performance para academias e centros esportivos. 
+              Entendemos que ambientes de treino exigem um rigor sanitário superior para garantir a saúde e segurança de seus alunos.
+            </p>
+            <p>
+              Nossa equipe utiliza protocolos específicos para eliminação de fungos e bactérias em equipamentos e tatames, 
+              garantindo um ambiente impecável que valoriza sua marca e fideliza seus clientes.
+            </p>
+          </div>
+          
+          <div className="mt-12 flex flex-wrap gap-6">
+            <div className="flex items-center gap-3 bg-brand-teal/5 px-6 py-3 rounded-2xl border border-brand-teal/10">
+              <ShieldCheck className="w-6 h-6 text-brand-teal" />
+              <span className="font-bold text-premium-dark text-sm uppercase tracking-wider">Segurança Total</span>
             </div>
+            <div className="flex items-center gap-3 bg-brand-teal/5 px-6 py-3 rounded-2xl border border-brand-teal/10">
+              <Sparkles className="w-6 h-6 text-brand-teal" />
+              <span className="font-bold text-premium-dark text-sm uppercase tracking-wider">Qualidade Premium</span>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
+          className="relative"
+        >
+          <div className="aspect-square rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white">
+            <img 
+              src="https://images.unsplash.com/photo-1581578731548-c64695cc6958?auto=format&fit=crop&q=80&w=1000" 
+              alt="Limpeza Profissional"
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+            />
+          </div>
+          {/* Badge Flutuante */}
+          <div className="absolute -bottom-10 -left-10 bg-white p-8 rounded-[2.5rem] shadow-2xl border border-gray-100 hidden md:block">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-brand-teal rounded-2xl flex items-center justify-center text-white">
+                <Users className="w-8 h-8" />
+              </div>
+              <div>
+                <p className="text-3xl font-bold text-premium-dark leading-none">100%</p>
+                <p className="text-xs font-bold text-brand-teal uppercase tracking-widest mt-1">Equipe Treinada</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+const ServicesSection = ({ onPrev }: { onPrev: () => void }) => {
+  const services = [
+    { title: "Higienização de Equipamentos", icon: "🧼", desc: "Limpeza técnica de aparelhos de musculação e cardio, removendo suor, bactérias e resíduos sem danificar superfícies." },
+    { title: "Limpeza de Pisos e Áreas de Treino", icon: "🧽", desc: "Tratamento adequado para cada tipo de piso, garantindo segurança, estética e durabilidade." },
+    { title: "Desinfecção de Tatames", icon: "🥋", desc: "Higienização profunda com produtos específicos que eliminam microrganismos e odores." },
+    { title: "Limpeza de Vestiários e Banheiros", icon: "🚿", desc: "Controle rigoroso de higiene em áreas críticas, prevenindo contaminações e mau cheiro." },
+    { title: "Sanitização de Áreas Comuns", icon: "🧴", desc: "Recepção, corredores e espaços compartilhados sempre limpos e organizados." },
+    { title: "Rotina Operacional Profissional", icon: "👥", desc: "Execução baseada em cronogramas, controle de ponto e supervisão contínua da equipe." }
+  ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const nextService = () => setCurrentIndex((prev) => (prev + 1) % services.length);
+  const prevService = () => setCurrentIndex((prev) => (prev - 1 + services.length) % services.length);
+
+  return (
+    <section className="relative min-h-screen w-full overflow-y-auto flex flex-col items-center justify-start bg-premium-gray px-4 md:px-12 pt-[60px] md:pt-[100px] pb-12 overflow-hidden">
+      {/* Background de Academia em Relevo (Sutil) */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.03] mix-blend-multiply grayscale">
+        <img 
+          src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=2000" 
+          alt="Gym Background" 
+          className="w-full h-full object-cover"
+          referrerPolicy="no-referrer"
+        />
+      </div>
+
+      <div className="relative z-10 w-full max-w-7xl flex flex-col items-center">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mt-4 md:mt-12 mb-2 md:mb-4"
+        >
+          <h3 className="text-brand-teal font-medium tracking-[0.4em] uppercase text-[9px] md:text-xs mb-1 md:mb-2">Especialidades</h3>
+          <h2 className="text-xl md:text-3xl font-display font-bold text-black">
+            Nossos <span className="text-brand-teal">Serviços</span>
+          </h2>
+        </motion.div>
+
+        {/* Carrossel de Cards 3D Efeito Vidro */}
+        <div className="w-full relative flex items-center justify-center gap-1 md:gap-6 perspective-1000">
+          <button 
+            onClick={prevService}
+            className="p-1.5 md:p-3 rounded-full bg-white/40 backdrop-blur-md shadow-lg text-brand-teal hover:bg-brand-teal hover:text-white transition-all z-20"
+          >
+            <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
+          </button>
+
+          <div className="flex-1 max-w-3xl overflow-hidden py-2 px-1 md:px-2">
+            <div className="flex justify-center">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentIndex}
+                  initial={{ opacity: 0, rotateY: 45, x: 50 }}
+                  animate={{ opacity: 1, rotateY: 0, x: 0 }}
+                  exit={{ opacity: 0, rotateY: -45, x: -50 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                  whileHover={{ 
+                    rotateX: 5, 
+                    rotateY: -5,
+                    scale: 1.02,
+                    transition: { duration: 0.2 }
+                  }}
+                  className="w-full max-w-[280px] sm:max-w-md aspect-video bg-white/30 backdrop-blur-2xl p-3 md:p-6 rounded-[1.2rem] md:rounded-[1.5rem] border border-white/50 shadow-[0_15px_35px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center text-center gap-1.5 md:gap-3 relative overflow-hidden group"
+                >
+                  {/* Reflexo de Vidro */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
+                  
+                  <div className="text-2xl md:text-4xl mb-0.5 drop-shadow-lg">{services[currentIndex].icon}</div>
+                  <h3 className="text-sm md:text-xl font-bold text-black uppercase tracking-wider leading-tight">
+                    {services[currentIndex].title}
+                  </h3>
+                  <p className="text-premium-dark/80 leading-relaxed text-[10px] md:text-sm max-w-[95%] md:max-w-[90%]">
+                    {services[currentIndex].desc}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+
+          <button 
+            onClick={nextService}
+            className="p-1.5 md:p-3 rounded-full bg-white/40 backdrop-blur-md shadow-lg text-brand-teal hover:bg-brand-teal hover:text-white transition-all z-20"
+          >
+            <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
+          </button>
+        </div>
+
+        {/* Indicadores de Progresso Compactos */}
+        <div className="flex gap-2 mt-8">
+          {services.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentIndex(i)}
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                currentIndex === i ? 'w-8 bg-brand-teal' : 'w-2 bg-premium-dark/10'
+              }`}
+            />
           ))}
         </div>
 
-        <div className="mt-8 md:mt-12 flex justify-center">
-          <motion.button
-            onClick={onPrev}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-white/90 backdrop-blur-md px-8 py-4 md:px-10 md:py-5 rounded-full flex items-center gap-3 group shadow-2xl border-2 border-brand-teal/30"
-          >
-            <ChevronUp className="w-5 h-5 text-brand-teal group-hover:-translate-y-1 transition-transform" />
-            <span className="font-bold text-premium-dark">Voltar ao Topo</span>
-          </motion.button>
-        </div>
+        {/* Frase de Autoridade */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-10 max-w-2xl text-center px-4"
+        >
+          <p className="text-premium-dark/70 font-medium italic text-sm md:text-base leading-relaxed">
+            <span className="text-brand-teal text-2xl block mb-3">💡</span>
+            "Mais do que limpeza, entregamos padrão profissional para academias que valorizam segurança, organização e experiência do aluno."
+          </p>
+        </motion.div>
+
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="mt-10 px-8 py-4 bg-premium-dark text-white rounded-full font-bold text-xs tracking-[0.2em] uppercase shadow-xl hover:bg-brand-teal transition-all"
+        >
+          Solicitar Orçamento
+        </motion.button>
       </div>
     </section>
   );
@@ -567,46 +693,135 @@ const ServicesSection = ({ scrollYProgress, onPrev }: { scrollYProgress: any, on
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>("catalog");
-  const { scrollYProgress } = useScroll();
+  const [currentSection, setCurrentSection] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const totalSections = 3;
 
-  const scrollToSection = (index: number) => {
-    const sections = document.querySelectorAll('section');
-    if (sections[index]) {
-      sections[index].scrollIntoView({ behavior: 'smooth' });
+  const paginate = (newDirection: number) => {
+    const nextSection = currentSection + newDirection;
+    if (nextSection >= 0 && nextSection < totalSections) {
+      setDirection(newDirection);
+      setCurrentSection(nextSection);
     }
   };
-  
+
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction === 0 ? 0 : (direction > 0 ? '100%' : '-100%'),
+      opacity: 0,
+      scale: 0.95,
+      filter: "blur(10px)"
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)"
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? '100%' : '-100%',
+      opacity: 0,
+      scale: 0.95,
+      filter: "blur(10px)"
+    })
+  };
+
   return (
-    <div className="relative bg-premium-gray font-sans selection:bg-brand-teal/30 selection:text-premium-dark">
+    <div className="relative min-h-screen w-full bg-premium-gray font-sans selection:bg-brand-teal/30 selection:text-premium-dark overflow-hidden">
       {currentPage === "catalog" ? (
-        <div key="catalog">
+        <div key="catalog" className="min-h-screen w-full relative">
+          {/* Navegação Lateral (Dots) */}
+          <div className="fixed right-8 top-1/2 -translate-y-1/2 z-[110] hidden md:flex flex-col gap-5">
+            {Array.from({ length: totalSections }).map((_, i) => (
+              <button
+                key={i}
+                onClick={() => {
+                  setDirection(i > currentSection ? 1 : -1);
+                  setCurrentSection(i);
+                }}
+                className={`w-3 h-3 rounded-full transition-all duration-500 ${
+                  currentSection === i ? 'bg-brand-teal scale-150 shadow-[0_0_15px_rgba(19,112,103,0.6)]' : 'bg-premium-dark/20 hover:bg-brand-teal/40'
+                }`}
+                aria-label={`Ir para seção ${i + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Botões de Navegação Laterais (Estilo Catálogo Premium) - Agora menores e mais acima */}
+          <div className="fixed top-[120px] md:top-[160px] left-0 right-0 pointer-events-none z-[105] flex items-center justify-between px-6 md:px-12">
+            {currentSection > 0 ? (
+              <motion.button
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                onClick={() => paginate(-1)}
+                className="pointer-events-auto w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/40 backdrop-blur-2xl border border-white/40 shadow-xl flex items-center justify-center text-premium-dark hover:bg-white hover:scale-110 transition-all group"
+              >
+                <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 group-hover:-translate-x-0.5 transition-transform" />
+              </motion.button>
+            ) : <div />}
+
+            {currentSection < totalSections - 1 && (
+              <motion.button
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                onClick={() => paginate(1)}
+                className="pointer-events-auto w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/40 backdrop-blur-2xl border border-white/40 shadow-xl flex items-center justify-center text-premium-dark hover:bg-white hover:scale-110 transition-all group"
+              >
+                <ChevronRight className="w-5 h-5 md:w-6 md:h-6 group-hover:translate-x-0.5 transition-transform" />
+              </motion.button>
+            )}
+          </div>
+
           {/* Botão de Academias Fixo no Topo Direito */}
           <button
             onClick={() => setCurrentPage("gym-cleaning")}
-            className="fixed top-6 right-6 z-[110] bg-white/40 backdrop-blur-xl px-4 py-2 rounded-full border border-white/40 shadow-xl flex items-center gap-2 hover:bg-white/60 transition-all group"
+            className="fixed top-8 right-8 z-[110] bg-white/60 backdrop-blur-2xl px-4 py-3 md:px-6 rounded-full border border-white/40 shadow-2xl flex items-center gap-3 hover:bg-white hover:scale-105 transition-all group"
           >
-            <Dumbbell className="w-3 h-3 text-brand-teal" />
-            <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-premium-dark">Academias</span>
+            <Dumbbell className="w-4 h-4 text-brand-teal" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-premium-dark hidden md:block">Academia</span>
           </button>
 
-          <Header scrollYProgress={scrollYProgress} />
+          <Header />
           
-          <main className="relative">
-            <HeroSection scrollYProgress={scrollYProgress} onNext={() => scrollToSection(1)} />
-            <AboutSection 
-              scrollYProgress={scrollYProgress} 
-              onNext={() => scrollToSection(2)} 
-              onPrev={() => scrollToSection(0)} 
-            />
-            <ServicesSection scrollYProgress={scrollYProgress} onPrev={() => scrollToSection(0)} />
+          <main className="min-h-screen w-full relative overflow-hidden bg-premium-gray">
+            <AnimatePresence initial={false} mode="wait">
+              <motion.div
+                key={currentSection}
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: "spring", stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.4 },
+                  scale: { duration: 0.5 },
+                  filter: { duration: 0.5 }
+                }}
+                className="absolute inset-0 w-full h-full"
+              >
+                {currentSection === 0 && <HeroSection onNext={() => paginate(1)} />}
+                {currentSection === 1 && (
+                  <AboutSection 
+                    onNext={() => paginate(1)} 
+                    onPrev={() => paginate(-1)} 
+                  />
+                )}
+                {currentSection === 2 && (
+                  <ServicesSection onPrev={() => paginate(-1)} />
+                )}
+              </motion.div>
+            </AnimatePresence>
           </main>
 
-          {/* Footer / Copyright */}
-          <footer className="py-12 px-6 text-center border-t border-premium-dark/5 relative z-10 bg-premium-gray">
-            <p className="text-xs text-premium-dark/40 tracking-widest uppercase">
-              © 2026 Haja Clean Facilities Services. Todos os direitos reservados.
+          {/* Copyright Discreto */}
+          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[110] opacity-30">
+            <p className="text-[8px] md:text-[10px] text-premium-dark tracking-[0.4em] uppercase whitespace-nowrap">
+              © 2026 Haja Clean • Catálogo Digital Corporativo
             </p>
-          </footer>
+          </div>
         </div>
       ) : (
         <GymCleaningPage 
