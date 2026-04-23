@@ -34,11 +34,14 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [currentTatameCard, setCurrentTatameCard] = useState(0);
   
   const slides = [
-    {
-      url: "/tatames.jpeg",
-      title: "Limpeza Profissional de Tatames",
-      desc: "Processo antibacteriano profissional que elimina riscos biológicos em superfícies porosas."
-    }
+    { url: "/5.jpeg", title: "Higienização de Equipamentos", desc: "Aplicação de produtos específicos que preservam o material e eliminam 99.9% dos microrganismos." },
+    { url: "/6.jpeg", title: "Padrão de Recepção Premium", desc: "Primeira impressão é a que fica. Ambientes impecáveis para receber seus alunos com elegância." },
+    { url: "/7.jpeg", title: "Vestiários e Áreas Úmidas", desc: "Controle bacteriológico rigoroso e desinfecção profunda em áreas de alto contato." },
+    { url: "/8.jpeg", title: "Studios de Alta Performance", desc: "Limpeza técnica para salas de aula coletiva, mantendo o ambiente fresco e motivador." },
+    { url: "/9.jpeg", title: "Excelência Haja Clean", desc: "O cuidado que sua marca merece em cada detalhe do ambiente de treino." },
+    { url: "/10.jpeg", title: "Manutenção de Pisos", desc: "Tratamento especializado para pisos esportivos, garantindo brilho e aderência ideal." },
+    { url: "/11.jpeg", title: "Segurança Sanitária", desc: "Protocolos rigorosos de desinfecção para garantir a saúde de alunos e colaboradores." },
+    { url: "/12.jpeg", title: "Ambientes Renovados", desc: "Sua academia sempre com aspecto de nova, elevando a percepção de valor dos seus clientes." }
   ];
 
   const tatameCards = [
@@ -97,13 +100,13 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center border border-gray-100">
             <svg viewBox="0 0 120 120" className="w-8 h-8">
-              <text x="10" y="85" className="fill-[#137067]" style={{ fontFamily: 'serif', fontWeight: 'bold', fontSize: '85px' }}>H</text>
-              <text x="45" y="85" className="fill-brand-coral" style={{ fontFamily: 'serif', fontWeight: 'bold', fontSize: '85px' }}>C</text>
+              <text x="10" y="85" className="fill-[#137067]" style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', fontSize: '85px' }}>H</text>
+              <text x="45" y="85" className="fill-brand-coral" style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', fontSize: '85px' }}>C</text>
             </svg>
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-bold text-brand-coral leading-none">Haja Clean</span>
-            <span className="text-[8px] uppercase tracking-widest text-[#137067] font-bold">Facilities</span>
+            <span className="text-[8px] tracking-widest text-[#137067] font-bold">Facilities Services</span>
           </div>
         </div>
         
@@ -111,17 +114,16 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           onClick={onBack}
           className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors text-sm font-medium shadow-sm pointer-events-auto"
         >
-          <ArrowLeft className="w-4 h-4" />
-          Voltar ao Catálogo
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-teal">Início</span>
         </button>
       </header>
 
       {/* Main Content Area */}
       <div className="flex-1">
         {/* Block 1: Intro & Main Carousel */}
-        <section className="min-h-[calc(100vh-80px)] flex flex-col lg:flex-row overflow-hidden border-b border-gray-100">
+        <section className="min-h-[calc(100vh-80px)] lg:h-[calc(100vh-80px)] flex flex-col lg:flex-row overflow-hidden border-b border-gray-100">
           {/* Left Column: Text Content */}
-          <div className="w-full lg:w-[45%] p-8 md:p-16 lg:p-24 flex flex-col justify-center bg-white z-10">
+          <div className="w-full lg:w-[45%] p-6 md:p-10 lg:p-24 flex flex-col justify-center bg-white z-10 shrink-0">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -144,22 +146,16 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
               </p>
 
               <ul className="space-y-4">
-                {[
-                  "Limpeza geral de equipamentos",
-                  "Higienização de tatames",
-                  "Tratamento de pisos",
-                  "Limpeza pré e pós-obra",
-                  "Sanitização de áreas de alto contato"
-                ].map((item, i) => (
+                {["Limpeza de equipamentos", "Tatames", "Pisos", "Sanitização"].map((item, i) => (
                   <motion.li 
                     key={i}
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.4 + (i * 0.1) }}
-                    className="flex items-center gap-3 text-gray-700 font-medium"
+                    className="flex items-center gap-2 text-gray-700 font-medium text-xs md:text-sm"
                   >
-                    <CheckCircle2 className="w-5 h-5 text-brand-teal" />
+                    <CheckCircle2 className="w-4 h-4 text-brand-teal" />
                     {item}
                   </motion.li>
                 ))}
@@ -168,72 +164,98 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           </div>
 
           {/* Right Column: Interactive Carousel */}
-          <div className="w-full lg:w-[55%] relative bg-gray-100 overflow-hidden min-h-[400px] lg:min-h-0">
-            <AnimatePresence mode="wait">
+          <div className="w-full lg:w-[55%] relative flex items-center justify-center p-4 md:p-12 lg:p-20 bg-gray-50/50">
+            <div className="relative w-full h-full max-w-4xl aspect-[4/3] lg:aspect-square rounded-[2rem] overflow-hidden shadow-[0_40px_80px_rgba(0,0,0,0.15)] bg-black">
+              <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={currentSlide}
-                initial={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
-                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute inset-0"
+                initial={{ opacity: 0, scale: 1.4, rotateY: 15, z: -200, filter: "blur(20px)" }}
+                animate={{ opacity: 1, scale: 1, rotateY: 0, z: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, scale: 0.8, rotateY: -15, z: 200, filter: "blur(20px)" }}
+                transition={{ 
+                  duration: 0.9, 
+                  ease: [0.22, 1, 0.36, 1],
+                  opacity: { duration: 0.6 }
+                }}
+                className="absolute inset-0 perspective-1000"
               >
-                <img 
-                  src={slides[currentSlide].url} 
-                  alt={slides[currentSlide].title}
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                
-                {/* Slide Content Overlay */}
-                <div className="absolute bottom-12 left-12 right-12 text-white">
-                  <motion.h3 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                    className="text-2xl md:text-3xl font-bold mb-2"
+                {/* Parallax Container */}
+                <motion.div
+                  animate={{
+                    x: rotateY * 2,
+                    y: rotateX * 2
+                  }}
+                  className="w-full h-full relative"
+                >
+                  <img 
+                    src={slides[currentSlide].url} 
+                    alt={slides[currentSlide].title}
+                    className="w-full h-full object-cover scale-110"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  
+                  {/* Neon Glow Accent */}
+                  <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-brand-teal/20 to-transparent pointer-events-none" />
+                </motion.div>
+
+                {/* Content Overlay with staggered animation */}
+                <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-16">
+                  <motion.div
+                    initial={{ opacity: 0, y: 30, x: -20 }}
+                    animate={{ opacity: 1, y: 0, x: 0 }}
+                    transition={{ delay: 0.3, duration: 0.8 }}
                   >
-                    {slides[currentSlide].title}
-                  </motion.h3>
-                  <motion.p 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                    className="text-white/80 text-lg font-light max-w-lg"
-                  >
-                    {slides[currentSlide].desc}
-                  </motion.p>
+                    <div className="flex items-center gap-3 mb-2 md:mb-4">
+                      <div className="h-[1px] w-8 bg-brand-coral" />
+                      <span className="text-brand-coral font-black uppercase tracking-[0.3em] text-[8px] md:text-[10px]">Lifestyle Gym</span>
+                    </div>
+                    <h3 className="text-lg md:text-3xl font-display font-bold text-white mb-2 md:mb-3 leading-tight drop-shadow-2xl">
+                      {slides[currentSlide].title}
+                    </h3>
+                    <p className="text-white/70 text-xs md:text-base font-light max-w-lg leading-relaxed line-clamp-2 md:line-clamp-none">
+                      {slides[currentSlide].desc}
+                    </p>
+                  </motion.div>
                 </div>
               </motion.div>
             </AnimatePresence>
 
             {/* Carousel Controls */}
-            <div className="absolute bottom-12 right-12 flex items-center gap-4 z-20">
-              <div className="hidden sm:flex gap-2 mr-4">
+            <div className="absolute bottom-12 right-12 flex items-center gap-6 z-20">
+              <div className="hidden sm:flex gap-3 mr-6">
                 {slides.map((_, i) => (
-                  <div 
+                  <motion.div 
                     key={i}
-                    className={`h-1 transition-all duration-500 rounded-full ${i === currentSlide ? "w-8 bg-white" : "w-2 bg-white/30"}`}
+                    animate={{ 
+                      width: i === currentSlide ? 40 : 8,
+                      backgroundColor: i === currentSlide ? "#F07050" : "rgba(255,255,255,0.3)"
+                    }}
+                    className="h-1.5 rounded-full transition-all duration-500"
                   />
                 ))}
               </div>
               
-              <button 
+              <motion.button 
+                whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.2)" }}
+                whileTap={{ scale: 0.9 }}
                 onClick={prevSlide}
-                className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all"
+                className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white transition-all shadow-2xl"
               >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-              <button 
+                <ChevronLeft className="w-5 h-5 md:w-7 md:h-7" />
+              </motion.button>
+              <motion.button 
+                whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.2)" }}
+                whileTap={{ scale: 0.9 }}
                 onClick={nextSlide}
-                className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all"
+                className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white transition-all shadow-2xl"
               >
-                <ChevronRight className="w-6 h-6" />
-              </button>
+                <ChevronRight className="w-5 h-5 md:w-7 md:h-7" />
+              </motion.button>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
         {/* Block 2: Limpeza Profissional de Tatames */}
         <section className="min-h-screen w-full flex flex-col lg:flex-row bg-[#f8f9fa] py-16 md:py-24 px-6 md:px-12 lg:px-24 gap-12 lg:gap-24 items-center">
@@ -242,7 +264,7 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             {/* Image Container using local file for 100% reliability */}
             <div className="relative min-h-[500px] lg:min-h-[650px] w-full bg-gray-100 rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.12)]">
               <img 
-                src="/tatames.jpeg" 
+                src="/13.jpeg" 
                 alt="Limpeza Profissional de Tatames Haja Clean"
                 className="absolute inset-0 w-full h-full object-cover"
                 referrerPolicy="no-referrer"
@@ -296,15 +318,15 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     if (info.offset.x > 50) prevTatame();
                     if (info.offset.x < -50) nextTatame();
                   }}
-                  className="w-full bg-white/40 backdrop-blur-2xl p-8 md:p-12 rounded-[2.5rem] border border-white/60 shadow-[0_30px_60px_rgba(0,0,0,0.03)] cursor-grab active:cursor-grabbing"
+                  className="w-full max-w-lg bg-white/50 backdrop-blur-2xl p-6 md:p-10 rounded-3xl border border-white/40 shadow-[0_20px_40px_rgba(0,0,0,0.02)] cursor-grab active:cursor-grabbing"
                 >
-                  <div className="w-14 h-14 rounded-2xl bg-brand-teal/10 flex items-center justify-center mb-8">
-                    <Sparkles className="w-7 h-7 text-brand-teal" />
+                  <div className="w-12 h-12 rounded-xl bg-brand-teal/10 flex items-center justify-center mb-6">
+                    <Sparkles className="w-6 h-6 text-brand-teal" />
                   </div>
-                  <h3 className="text-2xl font-bold text-black mb-4">
+                  <h3 className="text-lg font-bold text-black mb-2">
                     {tatameCards[currentTatameCard].title}
                   </h3>
-                  <p className="text-gray-600 text-lg leading-relaxed font-light">
+                  <p className="text-gray-600 text-base leading-relaxed font-light">
                     {tatameCards[currentTatameCard].text}
                   </p>
                 </motion.div>
@@ -349,17 +371,17 @@ const Header = () => {
       <div className="flex items-center gap-2 md:gap-4 bg-white/60 backdrop-blur-2xl px-4 py-2 md:px-6 md:py-3 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/40 ring-1 ring-brand-teal/5">
         <div className="relative w-10 h-10 md:w-14 md:h-14 flex items-center justify-center">
           <svg viewBox="0 0 120 120" className="w-full h-full drop-shadow-md">
-            <text x="10" y="85" className="fill-brand-teal" style={{ fontFamily: 'serif', fontWeight: 'bold', fontSize: '85px' }}>H</text>
-            <text x="45" y="85" className="fill-brand-coral" style={{ fontFamily: 'serif', fontWeight: 'bold', fontSize: '85px' }}>C</text>
+            <text x="10" y="85" className="fill-brand-teal" style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', fontSize: '85px' }}>H</text>
+            <text x="45" y="85" className="fill-brand-coral" style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', fontSize: '85px' }}>C</text>
             <line x1="25" y1="55" x2="105" y2="55" stroke="var(--color-brand-teal)" strokeWidth="3" />
             <path d="M100 48 L115 55 L100 62 Z" fill="var(--color-brand-teal)" />
           </svg>
         </div>
         <div className="flex flex-col">
-          <h1 className="text-base md:text-xl font-display font-bold tracking-tight text-brand-coral leading-none">
+          <h1 className="text-base md:text-xl font-serif font-bold tracking-tight text-brand-coral leading-none">
             Haja Clean
           </h1>
-          <span className="text-[8px] md:text-[12px] uppercase tracking-[0.3em] text-brand-teal font-bold mt-1">
+          <span className="text-[8px] md:text-[12px] tracking-[0.3em] text-brand-teal font-bold mt-1">
             Facilities Services
           </span>
         </div>
@@ -374,17 +396,17 @@ const HeroSection = ({ onNext }: { onNext: () => void }) => {
     {
       icon: <Target className="w-8 h-8 text-brand-teal" />,
       title: "MISSÃO",
-      content: "Oferecer serviços de limpeza profissional com excelência, responsabilidade e alto padrão de qualidade, garantindo ambientes seguros."
+      content: "Oferecer serviços de limpeza profissional com excelência, responsabilidade e alto padrão de qualidade."
     },
     {
       icon: <Award className="w-8 h-8 text-brand-teal" />,
       title: "VALORES",
-      content: "Profissionalismo, Transparência, Responsabilidade, Compromisso com o cliente e Qualidade contínua em cada detalhe."
+      content: "Profissionalismo, Transparência, Responsabilidade e Compromisso com a qualidade em cada detalhe."
     },
     {
       icon: <Handshake className="w-8 h-8 text-brand-teal" />,
       title: "COMPROMISSO",
-      content: "Atuamos com processos organizados e métodos profissionais que asseguram confiança e resultados consistentes para sua empresa."
+      content: "Processos organizados e métodos profissionais que asseguram confiança e resultados consistentes."
     }
   ];
 
@@ -392,105 +414,120 @@ const HeroSection = ({ onNext }: { onNext: () => void }) => {
   const prevCard = () => setCurrentCard((prev) => (prev - 1 + cards.length) % cards.length);
 
   return (
-    <section className="relative min-h-screen w-full overflow-y-auto flex flex-col items-start justify-start bg-[#f8f9fa] px-6 md:px-12 pt-[140px] md:pt-[200px] pb-32">
-      {/* Background Decorativo Corporativo */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_15%_15%,rgba(19,112,103,0.04)_0%,transparent_60%)]" />
-        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_85%_85%,rgba(19,112,103,0.04)_0%,transparent_60%)]" />
+    <section className="relative min-h-screen w-full flex flex-col items-center justify-center bg-black overflow-hidden px-6 lg:px-12 py-32">
+      {/* BACKGROUND VIDEO */}
+      <div className="absolute inset-0 z-0">
+        <video 
+          autoPlay 
+          muted 
+          loop 
+          playsInline 
+          className="w-full h-full object-cover opacity-60 scale-105"
+        >
+          <source src="/1.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/80" />
       </div>
 
-      <div className="relative z-20 w-full max-w-7xl flex flex-col items-start">
-        {/* Header Institucional - Capa do Catálogo */}
+      <div className="relative z-20 w-full max-w-7xl flex flex-col items-center text-center">
+        {/* Header Institucional */}
         <motion.div
-          initial={{ opacity: 0, y: 30, filter: "blur(15px)" }}
+          initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="text-left max-w-[900px] mb-12"
+          className="mb-16"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-black tracking-tight mb-6 leading-[1.15]">
+          <div className="flex justify-center items-center gap-4 mb-8">
+            <div className="h-px w-12 bg-brand-coral" />
+            <span className="text-brand-coral font-black tracking-[0.4em] uppercase text-[10px] md:text-xs">Bem vindo à Haja Clean</span>
+            <div className="h-px w-12 bg-brand-coral" />
+          </div>
+
+          <h2 className="text-5xl md:text-7xl lg:text-9xl font-serif font-bold text-gray-400 tracking-tighter leading-[0.9]">
             HAJA CLEAN
-            <span className="block mt-4">
-              <span className="text-brand-teal">Limpeza Especializada</span> para <br />
-              Academias e Studios
-            </span>
           </h2>
-          <p className="text-lg md:text-xl text-premium-dark/60 font-medium leading-relaxed">
-            Higienização de alta performance para ambientes de treino, garantindo segurança e bem-estar para seus alunos.
+          
+          <p className="text-xl md:text-3xl text-white/50 font-light tracking-tight mt-6 max-w-3xl mx-auto">
+            Limpeza Especializada para <br />
+            <span className="text-gray-400 font-medium border-b-2 border-brand-teal pb-1">Academias e Studios</span>
           </p>
         </motion.div>
 
-        {/* Slider de Cards Institucionais */}
-        <div className="relative w-full max-w-[500px] mb-12 group">
-          <div className="overflow-hidden rounded-[2rem] bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_20px_40px_rgba(0,0,0,0.03)]">
+        {/* Info Slider Section */}
+        <div className="w-full max-w-2xl relative">
+          <div className="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-8 md:p-12 overflow-hidden shadow-2xl relative group">
+            {/* Glossy accent */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-teal/20 blur-[60px] rounded-full -mr-16 -mt-16" />
+            
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentCard}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.5, ease: "circOut" }}
-                className="p-8 md:p-10 flex flex-col items-start text-left"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className="relative z-10"
               >
-                <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-6 border border-gray-50">
-                  {cards[currentCard].icon}
+                <div className="flex items-center gap-6 mb-8">
+                   <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10">
+                    {cards[currentCard].icon}
+                   </div>
+                   <h3 className="text-brand-coral font-black tracking-[0.3em] uppercase text-xs">
+                    {cards[currentCard].title}
+                   </h3>
                 </div>
-                
-                <h3 className="text-xs font-black tracking-[0.3em] text-brand-teal mb-4 uppercase">
-                  {cards[currentCard].title}
-                </h3>
-                
-                <p className="text-premium-dark/80 leading-relaxed text-sm md:text-base font-medium">
+                <p className="text-white/80 text-lg md:text-xl font-light text-left leading-relaxed">
                   {cards[currentCard].content}
                 </p>
               </motion.div>
             </AnimatePresence>
-          </div>
 
-          {/* Controles do Slider */}
-          <div className="flex items-center gap-4 mt-6">
-            <button 
-              onClick={prevCard}
-              className="p-3 rounded-full bg-white border border-gray-100 text-brand-teal hover:bg-brand-teal hover:text-white transition-all shadow-sm"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <div className="flex gap-2">
-              {cards.map((_, i) => (
-                <div 
-                  key={i}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${i === currentCard ? 'w-8 bg-brand-teal' : 'w-2 bg-gray-200'}`}
-                />
-              ))}
+            {/* Slider Controls Inside */}
+            <div className="flex items-center justify-between mt-12 md:mt-16 border-t border-white/10 pt-8">
+              <div className="flex gap-2">
+                {cards.map((_, i) => (
+                  <button 
+                    key={i}
+                    onClick={() => setCurrentCard(i)}
+                    className={`h-1.5 transition-all duration-500 rounded-full ${i === currentCard ? 'w-10 bg-brand-teal' : 'w-2 bg-white/20'}`}
+                  />
+                ))}
+              </div>
+              <div className="flex gap-4">
+                <button 
+                  onClick={prevCard} 
+                  className="p-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-all shadow-xl"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={nextCard} 
+                  className="p-3 rounded-full bg-brand-teal hover:bg-brand-teal/80 text-white transition-all shadow-xl"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
             </div>
-            <button 
-              onClick={nextCard}
-              className="p-3 rounded-full bg-white border border-gray-100 text-brand-teal hover:bg-brand-teal hover:text-white transition-all shadow-sm"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
           </div>
         </div>
 
-        {/* Botão de Chamada - Estilo Premium Reduzido */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2 }}
-          className="flex flex-col items-start mt-4"
+        {/* Explore Button */}
+        <motion.button
+          onClick={onNext}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5 }}
+          className="mt-16 flex flex-col items-center gap-4 group"
         >
-          <motion.button
-            onClick={onNext}
-            whileHover={{ 
-              scale: 1.05, 
-              boxShadow: "0 0 30px rgba(19, 112, 103, 0.15)"
-            }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-brand-teal text-white px-8 py-3.5 rounded-full font-bold tracking-[0.15em] shadow-xl transition-all flex items-center gap-3 group"
+          <span className="text-white/40 text-[9px] font-bold uppercase tracking-[0.5em] group-hover:text-brand-coral transition-colors">Arraste para conhecer</span>
+          <motion.div 
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="w-10 h-16 rounded-full border-2 border-white/20 flex items-start justify-center p-2"
           >
-            <span className="uppercase text-xs">Conheça nossos serviços</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </motion.button>
-        </motion.div>
+            <div className="w-1.5 h-3 bg-brand-teal rounded-full" />
+          </motion.div>
+        </motion.button>
       </div>
     </section>
   );
@@ -507,8 +544,8 @@ const AboutSection = ({ onNext, onPrev }: { onNext: () => void, onPrev: () => vo
         >
           <h3 className="text-brand-teal font-medium tracking-[0.4em] uppercase text-xs md:text-sm mb-6 mt-10">Nossa Identidade</h3>
           <h2 className="text-4xl md:text-6xl font-display font-bold text-black mb-8 leading-tight">
-            Compromisso com a <br />
-            <span className="text-brand-teal">Excelência</span>
+            Excelência em cada <br />
+            <span className="text-brand-teal">Detalhe</span>
           </h2>
           <div className="space-y-6 text-lg md:text-xl text-premium-dark/70 leading-relaxed">
             <p>
@@ -541,8 +578,8 @@ const AboutSection = ({ onNext, onPrev }: { onNext: () => void, onPrev: () => vo
         >
           <div className="aspect-square rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white">
             <img 
-              src="https://images.unsplash.com/photo-1581578731548-c64695cc6958?auto=format&fit=crop&q=80&w=1000" 
-              alt="Limpeza Profissional"
+              src="/nossa_identidade.jpg" 
+              alt="Profissional Haja Clean em serviço"
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
             />
@@ -729,7 +766,7 @@ export default function App() {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-premium-gray font-sans selection:bg-brand-teal/30 selection:text-premium-dark overflow-hidden">
+    <div className="relative min-h-screen w-full bg-premium-gray font-sans selection:bg-brand-teal/30 selection:text-premium-dark">
       {currentPage === "catalog" ? (
         <div key="catalog" className="min-h-screen w-full relative">
           {/* Navegação Lateral (Dots) */}
@@ -785,7 +822,7 @@ export default function App() {
 
           <Header />
           
-          <main className="min-h-screen w-full relative overflow-hidden bg-premium-gray">
+          <main className="min-h-screen w-full relative bg-premium-gray">
             <AnimatePresence initial={false} mode="wait">
               <motion.div
                 key={currentSection}

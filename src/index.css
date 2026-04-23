@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -9,6 +9,7 @@
   
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Outfit", sans-serif;
+  --font-serif: "Playfair Display", serif;
 }
 
 @layer base {
@@ -36,11 +37,11 @@
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 10px;
 }
 ::-webkit-scrollbar-track {
-  @apply bg-transparent;
+  @apply bg-gray-100;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-brand-teal/20 rounded-full hover:bg-brand-teal/40 transition-colors;
+  @apply bg-brand-teal/40 rounded-full hover:bg-brand-teal/60 transition-colors;
 }
