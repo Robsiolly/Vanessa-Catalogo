@@ -21,27 +21,353 @@ import {
   ArrowRight,
   Target,
   Award,
-  Handshake
+  Handshake,
+  Stethoscope
 } from 'lucide-react';
 
 // --- Types ---
-type Page = "catalog" | "gym-cleaning";
+type Page = "catalog" | "gym-cleaning" | "clinic-cleaning";
 
 // --- Components ---
+
+const ClinicCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentCard, setCurrentCard] = useState(0);
+  
+  const slides = [
+    { url: "/clinica/1.mp4", title: "Desinfecção de Ambientes Críticos", desc: "Protocolos rigorosos para salas de exames e consultórios, garantindo esterilização e segurança." },
+    { url: "/clinica/2.mp4", title: "Gestão de Resíduos Hospitalares", desc: "Manuseio especializado seguindo todas as normas da ANVISA para descarte seguro." },
+    { url: "/clinica/3.mp4", title: "Limpeza Técnica de Superfícies", desc: "Uso de desinfetantes de nível hospitalar que eliminam 99.9% de patógenos." },
+    { url: "/clinica/4.mp4", title: "Padrão de Recepção e Espera", desc: "Ambientes impecáveis que transmitem confiança e cuidado para seus pacientes." },
+    { url: "/clinica/5.mp4", title: "Higienização de Mobiliário Clínico", desc: "Cuidado minucioso com macas, cadeiras e equipamentos sensíveis." },
+    { url: "/clinica/6.mp4", title: "Vestiários e Áreas de Apoio", desc: "Controle bacteriológico rigoroso em todas as dependências da clínica." },
+    { url: "/clinica/7.mp4", title: "Qualidade do Ar e Ambiente", desc: "Práticas que auxiliam na manutenção da pureza do ar em ambientes fechados." },
+    { url: "/clinica/8.mp4", title: "Segurança Profissionais", desc: "Proteção para sua equipe através de um ambiente de trabalho higienizado profissionalmente." },
+    { url: "/clinica/9.mp4", title: "Excelência Haja Clean Saúde", desc: "O padrão ouro em facilities para o setor de saúde e bem-estar." }
+  ];
+
+  const clinicCards = [
+    {
+      title: "Segurança Biológica Rigorosa",
+      text: "Nossos processos são desenhados para mitigar riscos de contaminação cruzada em ambientes de saúde."
+    },
+    {
+      title: "Treinamento Especializado",
+      text: "Equipe capacitada especificamente para as particularidades e normativas do ambiente clínico."
+    },
+    {
+      title: "Produtos de Nível Hospitalar",
+      text: "Utilizamos apenas insumos certificados que garantem a eficácia da desinfecção sem agredir o patrimônio."
+    },
+    {
+      title: "Compliance e Auditoria",
+      text: "Relatórios detalhados e acompanhamento rigoroso para garantir que sua clínica esteja sempre em conformidade."
+    }
+  ];
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+
+  const nextCard = () => setCurrentCard((prev) => (prev + 1) % clinicCards.length);
+  const prevCard = () => setCurrentCard((prev) => (prev - 1 + clinicCards.length) % clinicCards.length);
+
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    setRotateX((y - centerY) / 25);
+    setRotateY((centerX - x) / 25);
+  };
+
+  const handleMouseLeave = () => {
+    setRotateX(0);
+    setRotateY(0);
+  };
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[200] bg-[#f8f9fa] flex flex-col overflow-y-auto overflow-x-hidden"
+    >
+      <header className="sticky top-0 w-full h-20 px-6 md:px-12 flex items-center justify-between bg-white/80 backdrop-blur-lg border-b border-gray-200 z-50">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center border border-gray-100">
+            <svg viewBox="0 0 120 120" className="w-8 h-8">
+              <text x="10" y="85" className="fill-[#137067]" style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', fontSize: '85px' }}>H</text>
+              <text x="45" y="85" className="fill-brand-coral" style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', fontSize: '85px' }}>C</text>
+            </svg>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-sm font-bold text-brand-coral leading-none">Haja Clean</span>
+            <span className="text-[8px] tracking-widest text-[#137067] font-bold">Facilities Services</span>
+          </div>
+        </div>
+        
+        <button 
+          onClick={onBack}
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors text-sm font-medium shadow-sm pointer-events-auto"
+        >
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-teal">VOLTAR</span>
+        </button>
+      </header>
+
+      <div className="flex-1">
+        {/* Section 1 */}
+        <section className="min-h-[calc(100vh-80px)] lg:h-[calc(100vh-80px)] flex flex-col lg:flex-row overflow-hidden border-b border-gray-100">
+          <div className="w-full lg:w-[45%] p-6 md:p-10 lg:p-24 flex flex-col justify-center bg-white z-10 shrink-0">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+            >
+              <div className="flex items-center gap-2 text-brand-teal mb-6">
+                <Stethoscope className="w-5 h-5" />
+                <span className="text-xs font-bold uppercase tracking-[0.3em]">Limpeza Clínica Técnica</span>
+              </div>
+              
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-black leading-tight mb-8">
+                Higiene Profissional <br />
+                <span className="text-brand-teal">para Clínicas</span>
+              </h1>
+              
+              <p className="text-lg text-gray-600 leading-relaxed mb-10 font-light">
+                A Haja Clean Facilities eleva o padrão de desinfecção para clínicas e ambientes de saúde, 
+                garantindo segurança biológica e um ambiente acolhedor para pacientes e profissionais.
+              </p>
+
+              <ul className="space-y-4">
+                {["Desinfecção hospitalar", "Gestão de resíduos", "Limpeza técnica", "Sanitização"].map((item, i) => (
+                  <motion.li 
+                    key={i}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.4 + (i * 0.1) }}
+                    className="flex items-center gap-2 text-gray-700 font-medium text-xs md:text-sm"
+                  >
+                    <CheckCircle2 className="w-4 h-4 text-brand-teal" />
+                    {item}
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+
+          <div className="w-full lg:w-[55%] relative flex items-center justify-center p-4 md:p-12 lg:p-20 bg-gray-50/50" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+            <div className="relative w-full h-full max-w-4xl aspect-[4/3] lg:aspect-square rounded-[2rem] overflow-hidden shadow-[0_40px_80px_rgba(0,0,0,0.15)] bg-black">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={currentSlide}
+                  initial={{ opacity: 0, scale: 1.4, rotateY: 15, z: -200, filter: "blur(20px)" }}
+                  animate={{ opacity: 1, scale: 1, rotateY: 0, z: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, scale: 0.8, rotateY: -15, z: 200, filter: "blur(20px)" }}
+                  transition={{ 
+                    duration: 0.9, 
+                    ease: [0.22, 1, 0.36, 1],
+                    opacity: { duration: 0.6 }
+                  }}
+                  className="absolute inset-0 perspective-1000"
+                >
+                  <motion.div
+                    animate={{
+                      x: rotateY * 2,
+                      y: rotateX * 2
+                    }}
+                    className="w-full h-full relative"
+                  >
+                    <video 
+                      autoPlay 
+                      muted 
+                      loop 
+                      playsInline
+                      className="w-full h-full object-cover scale-110"
+                    >
+                      <source src={slides[currentSlide].url} type="video/mp4" />
+                    </video>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-brand-teal/20 to-transparent pointer-events-none" />
+                  </motion.div>
+
+                  <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-16">
+                    <motion.div
+                      initial={{ opacity: 0, y: 30, x: -20 }}
+                      animate={{ opacity: 1, y: 0, x: 0 }}
+                      transition={{ delay: 0.3, duration: 0.8 }}
+                    >
+                      <div className="flex items-center gap-3 mb-2 md:mb-4">
+                        <div className="h-[1px] w-8 bg-brand-coral" />
+                        <span className="text-brand-coral font-black uppercase tracking-[0.3em] text-[8px] md:text-[10px]">Medical Care</span>
+                      </div>
+                      <h3 className="text-lg md:text-3xl font-display font-bold text-white mb-2 md:mb-3 leading-tight drop-shadow-2xl">
+                        {slides[currentSlide].title}
+                      </h3>
+                      <p className="text-white/70 text-xs md:text-base font-light max-w-lg leading-relaxed line-clamp-2 md:line-clamp-none">
+                        {slides[currentSlide].desc}
+                      </p>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+
+              <div className="absolute bottom-12 right-12 flex items-center gap-6 z-20">
+                <div className="hidden sm:flex gap-3 mr-6">
+                  {slides.map((_, i) => (
+                    <motion.div 
+                      key={i}
+                      animate={{ 
+                        width: i === currentSlide ? 40 : 8,
+                        backgroundColor: i === currentSlide ? "#F07050" : "rgba(255,255,255,0.3)"
+                      }}
+                      className="h-1.5 rounded-full transition-all duration-500"
+                    />
+                  ))}
+                </div>
+                
+                <motion.button 
+                  whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.2)" }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={prevSlide}
+                  className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white transition-all shadow-2xl"
+                >
+                  <ChevronLeft className="w-5 h-5 md:w-7 md:h-7" />
+                </motion.button>
+                <motion.button 
+                  whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.2)" }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={nextSlide}
+                  className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white transition-all shadow-2xl"
+                >
+                  <ChevronRight className="w-5 h-5 md:w-7 md:h-7" />
+                </motion.button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 2 */}
+        <section className="min-h-screen w-full flex flex-col lg:flex-row bg-[#f8f9fa] py-16 md:py-24 px-6 md:px-12 lg:px-24 gap-12 lg:gap-24 items-center">
+          <div className="w-full lg:w-1/2 relative">
+            <div className="relative min-h-[500px] lg:min-h-[650px] w-full bg-gray-100 rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.12)]">
+              <img 
+                src="/clinica/70.jpeg" 
+                alt="Ambiente Clínico Haja Clean"
+                className="absolute inset-0 w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+                loading="eager"
+              />
+              <div className="absolute inset-0 bg-gradient-to-tr from-brand-teal/10 to-transparent pointer-events-none" />
+            </div>
+            
+            <div className="absolute -bottom-8 -right-8 bg-white p-8 rounded-3xl shadow-2xl border border-gray-100 hidden md:flex flex-col items-center z-20">
+              <ShieldCheck className="w-10 h-10 text-brand-teal mb-2" />
+              <div className="text-center">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 block mb-1">Qualidade</span>
+                <span className="text-xs font-black uppercase tracking-[0.1em] text-brand-teal">Saúde Haja Clean</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full lg:w-1/2 flex flex-col">
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="mb-12"
+            >
+              <h2 className="text-3xl md:text-5xl font-display font-bold text-black mb-6">
+                Excelência Operacional <br />
+                <span className="text-brand-teal">em Saúde</span>
+              </h2>
+              <p className="text-gray-600 leading-relaxed font-light text-lg">
+                O ambiente clínico requer atenção redobrada. Nosso compromisso é com a manutenção de um espaço 
+                estéril, seguro e organizado, permitindo que você foque exclusivamente no atendimento de excelência 
+                aos seus pacientes.
+              </p>
+            </motion.div>
+
+            <div className="relative perspective-1000 min-h-[320px] flex items-center justify-center">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentCard}
+                  initial={{ opacity: 0, rotateY: 30, x: 40, filter: "blur(8px)" }}
+                  animate={{ opacity: 1, rotateY: 0, x: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, rotateY: -30, x: -40, filter: "blur(8px)" }}
+                  whileHover={{ rotateY: 8, rotateX: -3, scale: 1.03 }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  onDragEnd={(_, info) => {
+                    if (info.offset.x > 50) prevCard();
+                    if (info.offset.x < -50) nextCard();
+                  }}
+                  className="w-full max-w-lg bg-white/50 backdrop-blur-2xl p-6 md:p-10 rounded-3xl border border-white/40 shadow-[0_20px_40px_rgba(0,0,0,0.02)] cursor-grab active:cursor-grabbing"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-brand-teal/10 flex items-center justify-center mb-6">
+                    <Sparkles className="w-6 h-6 text-brand-teal" />
+                  </div>
+                  <h3 className="text-lg font-bold text-black mb-2">
+                    {clinicCards[currentCard].title}
+                  </h3>
+                  <p className="text-gray-600 text-base leading-relaxed font-light">
+                    {clinicCards[currentCard].text}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+
+              <div className="absolute -bottom-20 left-0 right-0 flex items-center justify-between px-4">
+                <div className="flex gap-2">
+                  {clinicCards.map((_, i) => (
+                    <div 
+                      key={i}
+                      className={`h-1.5 rounded-full transition-all duration-700 ${i === currentCard ? "w-10 bg-brand-teal" : "w-2 bg-gray-200"}`}
+                    />
+                  ))}
+                </div>
+                <div className="flex gap-4">
+                  <button 
+                    onClick={prevCard}
+                    className="w-12 h-12 rounded-full bg-white border border-gray-100 flex items-center justify-center text-gray-400 hover:text-brand-teal hover:border-brand-teal transition-all shadow-sm group"
+                  >
+                    <ChevronLeft className="w-6 h-6 group-active:scale-90 transition-transform" />
+                  </button>
+                  <button 
+                    onClick={nextCard}
+                    className="w-12 h-12 rounded-full bg-white border border-gray-100 flex items-center justify-center text-gray-400 hover:text-brand-teal hover:border-brand-teal transition-all shadow-sm group"
+                  >
+                    <ChevronRight className="w-6 h-6 group-active:scale-90 transition-transform" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </motion.div>
+  );
+};
+
 
 const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentTatameCard, setCurrentTatameCard] = useState(0);
   
   const slides = [
-    { url: "/5.jpeg", title: "Higienização de Equipamentos", desc: "Aplicação de produtos específicos que preservam o material e eliminam 99.9% dos microrganismos." },
-    { url: "/6.jpeg", title: "Padrão de Recepção Premium", desc: "Primeira impressão é a que fica. Ambientes impecáveis para receber seus alunos com elegância." },
-    { url: "/7.jpeg", title: "Vestiários e Áreas Úmidas", desc: "Controle bacteriológico rigoroso e desinfecção profunda em áreas de alto contato." },
-    { url: "/8.jpeg", title: "Studios de Alta Performance", desc: "Limpeza técnica para salas de aula coletiva, mantendo o ambiente fresco e motivador." },
-    { url: "/9.jpeg", title: "Excelência Haja Clean", desc: "O cuidado que sua marca merece em cada detalhe do ambiente de treino." },
-    { url: "/10.jpeg", title: "Manutenção de Pisos", desc: "Tratamento especializado para pisos esportivos, garantindo brilho e aderência ideal." },
-    { url: "/11.jpeg", title: "Segurança Sanitária", desc: "Protocolos rigorosos de desinfecção para garantir a saúde de alunos e colaboradores." },
-    { url: "/12.jpeg", title: "Ambientes Renovados", desc: "Sua academia sempre com aspecto de nova, elevando a percepção de valor dos seus clientes." }
+    { url: "/1.mp4", title: "Higienização de Equipamentos", desc: "Aplicação de produtos específicos que preservam o material e eliminam 99.9% dos microrganismos." },
+    { url: "/2.mp4", title: "Padrão de Recepção Premium", desc: "Primeira impressão é a que fica. Ambientes impecáveis para receber seus alunos com elegância." },
+    { url: "/3.mp4", title: "Vestiários e Áreas Úmidas", desc: "Controle bacteriológico rigoroso e desinfecção profunda em áreas de alto contato." },
+    { url: "/4.mp4", title: "Studios de Alta Performance", desc: "Limpeza técnica para salas de aula coletiva, mantendo o ambiente fresco e motivador." },
+    { url: "/5.jpeg", title: "Excelência Haja Clean", desc: "O cuidado que sua marca merece em cada detalhe do ambiente de treino." },
+    { url: "/6.jpeg", title: "Manutenção de Pisos", desc: "Tratamento especializado para pisos esportivos, garantindo brilho e aderência ideal." },
+    { url: "/7.jpeg", title: "Segurança Sanitária", desc: "Protocolos rigorosos de desinfecção para garantir a saúde de alunos e colaboradores." },
+    { url: "/8.jpeg", title: "Ambientes Renovados", desc: "Sua academia sempre com aspecto de nova, elevando a percepção de valor dos seus clientes." }
   ];
 
   const tatameCards = [
@@ -114,7 +440,7 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           onClick={onBack}
           className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors text-sm font-medium shadow-sm pointer-events-auto"
         >
-          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-teal">Início</span>
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-teal">VOLTAR</span>
         </button>
       </header>
 
@@ -187,12 +513,24 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                   }}
                   className="w-full h-full relative"
                 >
-                  <img 
-                    src={slides[currentSlide].url} 
-                    alt={slides[currentSlide].title}
-                    className="w-full h-full object-cover scale-110"
-                    referrerPolicy="no-referrer"
-                  />
+                  {slides[currentSlide].url.endsWith('.mp4') ? (
+                    <video 
+                      autoPlay 
+                      muted 
+                      loop 
+                      playsInline
+                      className="w-full h-full object-cover scale-110"
+                    >
+                      <source src={slides[currentSlide].url} type="video/mp4" />
+                    </video>
+                  ) : (
+                    <img 
+                      src={slides[currentSlide].url} 
+                      alt={slides[currentSlide].title}
+                      className="w-full h-full object-cover scale-110"
+                      referrerPolicy="no-referrer"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   
                   {/* Neon Glow Accent */}
@@ -811,14 +1149,24 @@ export default function App() {
             )}
           </div>
 
-          {/* Botão de Academias Fixo no Topo Direito */}
-          <button
-            onClick={() => setCurrentPage("gym-cleaning")}
-            className="fixed top-8 right-8 z-[110] bg-white/60 backdrop-blur-2xl px-4 py-3 md:px-6 rounded-full border border-white/40 shadow-2xl flex items-center gap-3 hover:bg-white hover:scale-105 transition-all group"
-          >
-            <Dumbbell className="w-4 h-4 text-brand-teal" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-premium-dark hidden md:block">Academia</span>
-          </button>
+          {/* Botões de Academias e Clínicas Fixo no Topo Direito */}
+          <div className="fixed top-8 right-8 z-[110] flex flex-col md:flex-row gap-4">
+            <button
+              onClick={() => setCurrentPage("gym-cleaning")}
+              className="bg-white/60 backdrop-blur-2xl px-4 py-3 md:px-6 rounded-full border border-white/40 shadow-2xl flex items-center gap-3 hover:bg-white hover:scale-105 transition-all group"
+            >
+              <Dumbbell className="w-4 h-4 text-brand-teal" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-premium-dark hidden md:block">Academia</span>
+            </button>
+
+            <button
+              onClick={() => setCurrentPage("clinic-cleaning")}
+              className="bg-white/60 backdrop-blur-2xl px-4 py-3 md:px-6 rounded-full border border-white/40 shadow-2xl flex items-center gap-3 hover:bg-white hover:scale-105 transition-all group"
+            >
+              <Stethoscope className="w-4 h-4 text-brand-teal" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-premium-dark hidden md:block">Clínicas</span>
+            </button>
+          </div>
 
           <Header />
           
@@ -860,8 +1208,12 @@ export default function App() {
             </p>
           </div>
         </div>
-      ) : (
+      ) : currentPage === "gym-cleaning" ? (
         <GymCleaningPage 
+          onBack={() => setCurrentPage("catalog")} 
+        />
+      ) : (
+        <ClinicCleaningPage 
           onBack={() => setCurrentPage("catalog")} 
         />
       )}
