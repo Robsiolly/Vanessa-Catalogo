@@ -106,7 +106,7 @@ const ClinicCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-bold text-brand-coral leading-none">Haja Clean</span>
-            <span className="text-[8px] tracking-widest text-[#137067] font-bold">Facilities Services</span>
+            <span translate="no" className="text-[8px] tracking-widest text-[#137067] font-bold notranslate">Facilities Services</span>
           </div>
         </div>
         
@@ -432,7 +432,7 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-bold text-brand-coral leading-none">Haja Clean</span>
-            <span className="text-[8px] tracking-widest text-[#137067] font-bold">Facilities Services</span>
+            <span translate="no" className="text-[8px] tracking-widest text-[#137067] font-bold notranslate">Facilities Services</span>
           </div>
         </div>
         
@@ -719,7 +719,7 @@ const Header = () => {
           <h1 className="text-base md:text-xl font-serif font-bold tracking-tight text-brand-coral leading-none">
             Haja Clean
           </h1>
-          <span className="text-[8px] md:text-[12px] tracking-[0.3em] text-brand-teal font-bold mt-1">
+          <span translate="no" className="text-[8px] md:text-[12px] tracking-[0.3em] text-brand-teal font-bold mt-1 notranslate">
             Facilities Services
           </span>
         </div>
