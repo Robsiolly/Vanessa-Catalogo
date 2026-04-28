@@ -98,23 +98,23 @@ const ClinicCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     >
       <header className="sticky top-0 w-full h-20 px-6 md:px-12 flex items-center justify-between bg-white/80 backdrop-blur-lg border-b border-gray-200 z-50">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center border border-gray-100">
-            <svg viewBox="0 0 120 120" className="w-8 h-8">
+          <div className="w-8 h-8 md:w-10 md:h-10 bg-white rounded-lg shadow-sm flex items-center justify-center border border-gray-100">
+            <svg viewBox="0 0 120 120" className="w-6 h-6 md:w-8 md:h-8">
               <text x="10" y="85" className="fill-[#137067]" style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', fontSize: '85px' }}>H</text>
               <text x="45" y="85" className="fill-brand-coral" style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', fontSize: '85px' }}>C</text>
             </svg>
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-bold text-brand-coral leading-none">Haja Clean</span>
-            <span translate="no" className="text-[8px] tracking-widest text-[#137067] font-bold notranslate">Facilities Services</span>
+            <span className="text-xs md:text-sm font-bold text-brand-coral leading-none">Haja Clean</span>
+            <span translate="no" className="text-[6px] md:text-[8px] tracking-widest text-[#137067] font-bold notranslate">Facilities Services</span>
           </div>
         </div>
         
         <button 
           onClick={onBack}
-          className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors text-sm font-medium shadow-sm pointer-events-auto"
+          className="flex items-center gap-1.5 md:gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors text-xs font-medium shadow-sm pointer-events-auto"
         >
-          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-teal">VOLTAR</span>
+          <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] text-brand-teal">VOLTAR</span>
         </button>
       </header>
 
@@ -217,8 +217,8 @@ const ClinicCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 </motion.div>
               </AnimatePresence>
 
-              <div className="absolute bottom-12 right-12 flex items-center gap-6 z-20">
-                <div className="hidden sm:flex gap-3 mr-6">
+              <div className="absolute bottom-6 right-6 md:bottom-12 md:right-12 flex items-center gap-4 md:gap-6 z-20">
+                <div className="hidden md:flex gap-3 mr-4">
                   {slides.map((_, i) => (
                     <motion.div 
                       key={i}
@@ -253,7 +253,7 @@ const ClinicCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         </section>
 
         {/* Section 2 */}
-        <section className="min-h-screen w-full flex flex-col lg:flex-row bg-[#f8f9fa] py-16 md:py-24 px-6 md:px-12 lg:px-24 gap-12 lg:gap-24 items-center">
+        <section className="min-h-screen w-full flex flex-col lg:flex-row bg-[#f8f9fa] py-20 md:py-32 px-6 md:px-12 lg:px-24 gap-12 lg:gap-24 items-center overflow-hidden">
           <div className="w-full lg:w-1/2 relative">
             <div className="relative min-h-[500px] lg:min-h-[650px] w-full bg-gray-100 rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.12)]">
               <img 
@@ -308,7 +308,7 @@ const ClinicCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     if (info.offset.x > 50) prevCard();
                     if (info.offset.x < -50) nextCard();
                   }}
-                  className="w-full max-w-lg bg-white/50 backdrop-blur-2xl p-6 md:p-10 rounded-3xl border border-white/40 shadow-[0_20px_40px_rgba(0,0,0,0.02)] cursor-grab active:cursor-grabbing"
+                  className="w-full max-w-[320px] md:max-w-lg bg-white/50 backdrop-blur-2xl p-6 md:p-10 rounded-3xl border border-white/40 shadow-[0_20px_40px_rgba(0,0,0,0.02)] cursor-grab active:cursor-grabbing"
                 >
                   <div className="w-12 h-12 rounded-xl bg-brand-teal/10 flex items-center justify-center mb-6">
                     <Sparkles className="w-6 h-6 text-brand-teal" />
@@ -706,8 +706,8 @@ const Header = () => {
   return (
     <header className="fixed top-0 left-0 z-[100] p-4 md:p-8 flex items-center">
       {/* Card com Efeito Vidro 3D - Fixo no Topo Esquerdo */}
-      <div className="flex items-center gap-2 md:gap-4 bg-white/60 backdrop-blur-2xl px-4 py-2 md:px-6 md:py-3 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/40 ring-1 ring-brand-teal/5">
-        <div className="relative w-10 h-10 md:w-14 md:h-14 flex items-center justify-center">
+      <div className="flex items-center gap-2 md:gap-4 bg-white/60 backdrop-blur-2xl px-3 py-2 md:px-6 md:py-3 rounded-xl md:rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/40 ring-1 ring-brand-teal/5">
+        <div className="relative w-8 h-8 md:w-14 md:h-14 flex items-center justify-center">
           <svg viewBox="0 0 120 120" className="w-full h-full drop-shadow-md">
             <text x="10" y="85" className="fill-brand-teal" style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', fontSize: '85px' }}>H</text>
             <text x="45" y="85" className="fill-brand-coral" style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', fontSize: '85px' }}>C</text>
@@ -716,10 +716,10 @@ const Header = () => {
           </svg>
         </div>
         <div className="flex flex-col">
-          <h1 className="text-base md:text-xl font-serif font-bold tracking-tight text-brand-coral leading-none">
+          <h1 className="text-sm md:text-xl font-serif font-bold tracking-tight text-brand-coral leading-none">
             Haja Clean
           </h1>
-          <span translate="no" className="text-[8px] md:text-[12px] tracking-[0.3em] text-brand-teal font-bold mt-1 notranslate">
+          <span translate="no" className="text-[7px] md:text-[12px] tracking-[0.2em] md:tracking-[0.3em] text-brand-teal font-bold mt-0.5 md:mt-1 notranslate">
             Facilities Services
           </span>
         </div>
@@ -1150,21 +1150,21 @@ export default function App() {
           </div>
 
           {/* Botões de Academias e Clínicas Fixo no Topo Direito */}
-          <div className="fixed top-8 right-8 z-[110] flex flex-col md:flex-row gap-4">
+          <div className="fixed top-4 right-4 md:top-8 md:right-8 z-[110] flex flex-col md:flex-row gap-2 md:gap-4">
             <button
               onClick={() => setCurrentPage("gym-cleaning")}
-              className="bg-white/60 backdrop-blur-2xl px-4 py-3 md:px-6 rounded-full border border-white/40 shadow-2xl flex items-center gap-3 hover:bg-white hover:scale-105 transition-all group"
+              className="bg-white/60 backdrop-blur-2xl px-3 py-2 md:px-6 md:py-3 rounded-full border border-white/40 shadow-2xl flex items-center gap-2 md:gap-3 hover:bg-white hover:scale-105 transition-all group"
             >
-              <Dumbbell className="w-4 h-4 text-brand-teal" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-premium-dark hidden md:block">Academia</span>
+              <Dumbbell className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-teal" />
+              <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.15em] md:tracking-[0.25em] text-premium-dark">Academia</span>
             </button>
-
+ 
             <button
               onClick={() => setCurrentPage("clinic-cleaning")}
-              className="bg-white/60 backdrop-blur-2xl px-4 py-3 md:px-6 rounded-full border border-white/40 shadow-2xl flex items-center gap-3 hover:bg-white hover:scale-105 transition-all group"
+              className="bg-white/60 backdrop-blur-2xl px-3 py-2 md:px-6 md:py-3 rounded-full border border-white/40 shadow-2xl flex items-center gap-2 md:gap-3 hover:bg-white hover:scale-105 transition-all group"
             >
-              <Stethoscope className="w-4 h-4 text-brand-teal" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-premium-dark hidden md:block">Clínicas</span>
+              <Stethoscope className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-teal" />
+              <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.15em] md:tracking-[0.25em] text-premium-dark">Clínicas</span>
             </button>
           </div>
 
