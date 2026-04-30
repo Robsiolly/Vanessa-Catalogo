@@ -709,7 +709,7 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 };
 const Header = () => {
   return (
-    <header className="fixed top-0 left-0 z-[100] p-4 md:p-8 flex items-center">
+    <header className="fixed top-6 left-6 md:left-8 lg:left-12 z-[100] p-0 flex items-center">
       {/* Card com Efeito Vidro 3D - Fixo no Topo Esquerdo */}
       <div className="flex items-center gap-2 md:gap-4 bg-white/60 backdrop-blur-2xl px-3 py-2 md:px-6 md:py-3 rounded-xl md:rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/40 ring-1 ring-brand-teal/5">
         <div className="relative w-8 h-8 md:w-14 md:h-14 flex items-center justify-center">
