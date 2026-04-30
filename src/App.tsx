@@ -1661,31 +1661,33 @@ export default function App() {
             layout
             className={`fixed z-[120] transition-all duration-700 ease-in-out hidden lg:flex ${
               isScrolled 
-                ? "top-1/2 right-2 -translate-y-1/2 flex-col" 
+                ? "top-1/2 right-4 -translate-y-1/2" 
                 : "top-6 left-0 right-0 justify-center"
             }`}
           >
             <motion.nav 
               layout
-              className={`bg-white/40 backdrop-blur-2xl border border-white/40 shadow-2xl rounded-[2.5rem] p-1.5 flex transition-all duration-700 ${
-                isScrolled ? "flex-col gap-2" : "flex-row gap-1"
+              className={`bg-white/40 backdrop-blur-3xl border border-white/40 shadow-2xl flex transition-all duration-700 ${
+                isScrolled 
+                  ? "flex-col gap-3 p-2 rounded-2xl w-14 items-center" 
+                  : "flex-row gap-1 p-1.5 rounded-[2.5rem]"
               }`}
             >
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => setCurrentPage(item.id as Page)}
-                  className={`flex items-center gap-3 rounded-full hover:bg-white/60 transition-all group ${
-                    isScrolled ? "p-3" : "px-4 py-2.5"
+                  className={`flex items-center justify-center rounded-full hover:bg-white/60 transition-all group relative ${
+                    isScrolled ? "w-10 h-10" : "px-4 py-2.5"
                   }`}
                   title={item.label}
                 >
                   <item.icon className={`text-brand-teal transition-all ${isScrolled ? "w-5 h-5" : "w-4 h-4"}`} />
                   {!isScrolled && (
-                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-premium-dark">{item.label}</span>
+                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-premium-dark ml-2">{item.label}</span>
                   )}
                   {isScrolled && (
-                    <div className="absolute right-full mr-4 px-3 py-1 bg-premium-dark text-white text-[8px] uppercase tracking-widest rounded opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-xl border border-white/10">
+                    <div className="absolute right-full mr-4 px-3 py-1.5 bg-premium-dark text-white text-[9px] font-bold uppercase tracking-widest rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-all duration-300 whitespace-nowrap shadow-2xl border border-white/10 translate-x-2 group-hover:translate-x-0">
                       {item.label}
                     </div>
                   )}
