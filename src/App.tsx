@@ -5,7 +5,7 @@
 
 import * as React from 'react';
 import { useState, useEffect, useRef, MouseEvent } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { 
   ChevronDown, 
   ChevronUp, 
@@ -22,11 +22,16 @@ import {
   Target,
   Award,
   Handshake,
-  Stethoscope
+  Stethoscope,
+  Phone,
+  Mail,
+  MessageSquare,
+  Menu,
+  X
 } from 'lucide-react';
 
 // --- Types ---
-type Page = "catalog" | "gym-cleaning" | "clinic-cleaning";
+type Page = "catalog" | "gym-cleaning" | "clinic-cleaning" | "products" | "about" | "contact";
 
 // --- Components ---
 
@@ -300,7 +305,7 @@ const ClinicCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                   initial={{ opacity: 0, rotateY: 30, x: 40, filter: "blur(8px)" }}
                   animate={{ opacity: 1, rotateY: 0, x: 0, filter: "blur(0px)" }}
                   exit={{ opacity: 0, rotateY: -30, x: -40, filter: "blur(8px)" }}
-                  whileHover={{ rotateY: 8, rotateX: -3, scale: 1.03 }}
+                  whileHover={{ rotateY: 8, rotateX: -3 }}
                   transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                   drag="x"
                   dragConstraints={{ left: 0, right: 0 }}
@@ -648,7 +653,7 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                   initial={{ opacity: 0, rotateY: 30, x: 40, filter: "blur(8px)" }}
                   animate={{ opacity: 1, rotateY: 0, x: 0, filter: "blur(0px)" }}
                   exit={{ opacity: 0, rotateY: -30, x: -40, filter: "blur(8px)" }}
-                  whileHover={{ rotateY: 8, rotateX: -3, scale: 1.03 }}
+                  whileHover={{ rotateY: 8, rotateX: -3 }}
                   transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                   drag="x"
                   dragConstraints={{ left: 0, right: 0 }}
@@ -1066,11 +1071,489 @@ const ServicesSection = ({ onPrev }: { onPrev: () => void }) => {
   );
 };
 
+const ProductsPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+  const chemicals = [
+    { name: "Álcool Gel 70° INPM", brand: "Clarity Care", img: "/Produtos/0.jpeg", desc: "Sanitizante de alta eficácia para mãos com secagem rápida, essencial para ambientes de alto fluxo como recepções e áreas de treino." },
+    { name: "Álcool Etílico 70°", brand: "Clarity Care", img: "/Produtos/1.jpeg", desc: "Desinfetante hospitalar para superfícies fixas e artigos não críticos, garantindo a eliminação de 99.9% dos patógenos." },
+    { name: "Sabonete Perolado", brand: "Valência", img: "/Produtos/2.jpeg", desc: "Sabonete líquido premium com fórmula balanceada e fragrância suave, ideal para vestiários e banheiros corporativos." },
+    { name: "Cloro Ativo 5L", brand: "Valência", img: "/Produtos/3.jpeg", desc: "Poderoso agente desinfetante e alvejante para limpeza pesada de áreas externas e sanitização profunda de superfícies laváveis." },
+    { name: "Desinfetante Floral", brand: "Valência", img: "/Produtos/4.jpeg", desc: "Limpeza técnica com alto poder bactericida e fragrância prolongada, mantendo o ambiente fresco e seguro por mais tempo." },
+    { name: "Detergente Limpa Piso", brand: "Valência", img: "/Produtos/5.jpeg", desc: "Fórmula especializada para remoção de sujidades pesadas em pisos esportivos (emborrachados) e cerâmicos sem agredir o material." },
+  ];
+
+  const equipments = [
+    { name: "Carrinho Funcional", img: "/Produtos/6.jpeg", desc: "Sistema completo para transporte de insumos e coleta de resíduos, otimizando a produtividade da equipe." },
+    { name: "Estação de Limpeza", img: "/Produtos/7.jpeg", desc: "Módulo avançado para organização de mop, químicos e acessórios de higienização técnica." },
+    { name: "Sinalização de Segurança", img: "/Produtos/8.jpeg", desc: "Placa 'Piso Molhado' de alta visibilidade, essencial para prevenção de acidentes durante a operação." },
+    { name: "Aviso de Manutenção", img: "/Produtos/9.jpeg", desc: "Sinalização profissional para áreas em processo de limpeza, garantindo a segurança de todos." },
+    { name: "Balde Espremedor", img: "/Produtos/10.jpeg", desc: "Equipamento ergonômico para limpeza de pisos, reduzindo esforço físico e desperdício de água." },
+    { name: "Mop Profissional", img: "/Produtos/11.jpeg", desc: "Fibra de alta absorção para limpeza úmida e seca, ideal para grandes áreas e centros esportivos." },
+    { name: "Kit de Higienização", img: "/Produtos/12.jpeg", desc: "Conjunto completo de ferramentas para limpeza técnica em consultórios e salas de exames." },
+    { name: "Vassoura Profissional", img: "/Produtos/13.jpeg", desc: "Vassoura de alta resistência com cerdas sintéticas, ideal para varrição de grandes áreas secas e úmidas com máxima eficiência." },
+    { name: "Rodo Profissional", img: "/Produtos/14.jpeg", desc: "Rodo de alta performance com borracha dupla, garantindo a secagem completa de pisos com o mínimo esforço e máxima aderência." }
+  ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const nextProduct = () => setCurrentIndex((prev) => (prev + 1) % chemicals.length);
+  const prevProduct = () => setCurrentIndex((prev) => (prev - 1 + chemicals.length) % chemicals.length);
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[200] bg-[#f8f9fa] flex flex-col overflow-y-auto overflow-x-hidden"
+    >
+      <header className="sticky top-0 w-full h-20 px-6 md:px-12 flex items-center justify-between bg-white/80 backdrop-blur-lg border-b border-gray-200 z-50">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center border border-gray-100">
+            <svg viewBox="0 0 120 120" className="w-8 h-8">
+              <text x="10" y="85" className="fill-[#137067]" style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', fontSize: '85px' }}>H</text>
+              <text x="45" y="85" className="fill-brand-coral" style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', fontSize: '85px' }}>C</text>
+            </svg>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-sm font-bold text-brand-coral leading-none">Haja Clean</span>
+            <span translate="no" className="text-[8px] tracking-widest text-[#137067] font-bold notranslate">Facilities Services</span>
+          </div>
+        </div>
+        
+        <button 
+          onClick={onBack}
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors text-sm font-medium shadow-sm pointer-events-auto"
+        >
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-teal">VOLTAR</span>
+        </button>
+      </header>
+
+      <div className="flex-1 flex flex-col items-center py-12 px-4 md:px-12">
+        {/* Seção 1: Insumos Químicos */}
+        <div className="relative z-10 w-full max-w-7xl flex flex-col items-center mb-24 md:mb-32">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="text-center mb-8 md:mb-12"
+          >
+            <div className="flex items-center justify-center gap-2 text-brand-teal mb-4">
+              <Sparkles className="w-5 h-5" />
+              <span className="text-xs font-bold uppercase tracking-[0.3em]">Linha de Insumos</span>
+            </div>
+            <h2 className="text-3xl md:text-5xl font-display font-bold text-black">
+              Produtos <span className="text-brand-teal">Químicos</span>
+            </h2>
+          </motion.div>
+
+          <div className="w-full relative flex items-center justify-center gap-1 md:gap-6 perspective-1000">
+            <button 
+              onClick={prevProduct}
+              className="p-2 md:p-4 rounded-full bg-white/60 backdrop-blur-md shadow-lg text-brand-teal hover:bg-brand-teal hover:text-white transition-all z-20 hover:scale-110 active:scale-95"
+            >
+              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+
+            <div className="flex-1 max-w-5xl overflow-hidden py-6 px-2 md:px-4">
+              <div className="flex justify-center">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentIndex}
+                    initial={{ opacity: 0, scale: 0.9, rotateY: 20 }}
+                    animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, rotateY: -20 }}
+                    transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                    className="w-full max-w-[340px] md:max-w-3xl bg-white/40 backdrop-blur-3xl p-6 md:p-12 rounded-[2.5rem] border border-white/60 shadow-[0_30px_70px_rgba(0,0,0,0.08)] flex flex-col md:flex-row items-center gap-8 md:gap-16 relative overflow-hidden group"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent pointer-events-none" />
+                    
+                    <div className="w-full md:w-[45%] aspect-square rounded-3xl overflow-hidden bg-white/80 p-6 md:p-8 shadow-[inset_0_2px_10px_rgba(0,0,0,0.02)] relative group-hover:scale-105 transition-transform duration-700 ease-out">
+                      <img 
+                        src={chemicals[currentIndex].img} 
+                        alt={chemicals[currentIndex].name}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+
+                    <div className="w-full md:w-[55%] flex flex-col text-left">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-6 h-px bg-brand-coral" />
+                        <span className="text-brand-coral font-black text-[9px] md:text-[11px] uppercase tracking-[0.3em]">
+                          {chemicals[currentIndex].brand}
+                        </span>
+                      </div>
+                      <h3 className="text-2xl md:text-4xl font-display font-bold text-black mb-4 md:mb-6 leading-tight">
+                        {chemicals[currentIndex].name}
+                      </h3>
+                      <p className="text-premium-dark/70 text-sm md:text-lg leading-relaxed font-light mb-8 md:mb-10">
+                        {chemicals[currentIndex].desc}
+                      </p>
+                      <div className="flex flex-wrap gap-4">
+                        <button className="px-6 md:px-8 py-3.5 md:py-4 bg-brand-teal text-white rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] hover:bg-brand-teal/80 transition-all shadow-xl shadow-brand-teal/20 active:scale-95">
+                          Aprovado
+                        </button>
+                        <div className="flex items-center gap-2 text-brand-teal">
+                          <ShieldCheck className="w-5 h-5" />
+                          <span className="text-[10px] font-bold uppercase tracking-wider">Qualidade Garantida</span>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+
+            <button 
+              onClick={nextProduct}
+              className="p-2 md:p-4 rounded-full bg-white/60 backdrop-blur-md shadow-lg text-brand-teal hover:bg-brand-teal hover:text-white transition-all z-20 hover:scale-110 active:scale-95"
+            >
+              <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+          </div>
+
+          <div className="flex gap-3 mt-12 md:mt-16">
+            {chemicals.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentIndex(i)}
+                className={`h-2 rounded-full transition-all duration-700 ${
+                  currentIndex === i ? 'w-12 bg-brand-teal' : 'w-2.5 bg-premium-dark/10'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Seção 2: Equipamentos e Acessórios */}
+        <div className="w-full max-w-7xl px-4 md:px-6 mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="text-center mb-16 md:mb-24"
+          >
+            <div className="flex items-center justify-center gap-2 text-brand-teal mb-4">
+              <ShieldCheck className="w-5 h-5" />
+              <span className="text-xs font-bold uppercase tracking-[0.3em]">Hardware de Limpeza</span>
+            </div>
+            <h2 className="text-3xl md:text-5xl font-display font-bold text-black">
+              Equipamentos <span className="text-brand-teal">Profissionais</span>
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+            {equipments.map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                whileHover={{ y: -10, rotateX: 5, rotateY: -5 }}
+                className="group bg-white/40 backdrop-blur-2xl p-6 md:p-8 rounded-[2rem] border border-white/60 shadow-[0_15px_35px_rgba(0,0,0,0.05)] flex flex-col items-center text-center transition-all duration-500 perspective-1000"
+              >
+                <div className="w-full aspect-square rounded-2xl bg-white/80 p-6 mb-6 shadow-inner relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-brand-teal/5 to-transparent pointer-events-none" />
+                  <img 
+                    src={item.img} 
+                    alt={item.name}
+                    className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
+                  />
+                </div>
+                <h3 className="text-lg md:text-xl font-bold text-black mb-3 group-hover:text-brand-teal transition-colors">
+                  {item.name}
+                </h3>
+                <p className="text-premium-dark/60 text-sm leading-relaxed mb-6 font-light">
+                  {item.desc}
+                </p>
+                <div className="mt-auto px-6 py-2.5 bg-brand-teal/5 text-brand-teal rounded-full text-[10px] font-bold uppercase tracking-[0.2em] border border-brand-teal/10 group-hover:bg-brand-teal group-hover:text-white transition-all">
+                  Aprovado
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const AboutPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ container: containerRef });
+  
+  // Parallax sutil para o fundo e textos
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "-50px"]);
+
+  return (
+    <motion.div 
+      ref={containerRef}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[200] bg-[#050505] flex flex-col overflow-y-auto overflow-x-hidden selection:bg-brand-teal/30"
+    >
+      {/* 1. ATMOSFERA: Background com movimentos orgânicos lentos */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <motion.div 
+          animate={{ 
+            x: [0, 50, 0], 
+            y: [0, 30, 0],
+            scale: [1, 1.1, 1]
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-teal/5 blur-[150px] rounded-full" 
+        />
+        <motion.div 
+          animate={{ 
+            x: [0, -40, 0], 
+            y: [0, -50, 0],
+            scale: [1, 1.2, 1]
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-brand-coral/5 blur-[150px] rounded-full" 
+        />
+        <motion.div 
+          style={{ y: backgroundY }}
+          className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03]" 
+        />
+      </div>
+
+      <header className="sticky top-0 w-full h-20 px-6 md:px-12 flex items-center justify-between bg-black/20 backdrop-blur-md border-b border-white/5 z-50">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-white/10 rounded flex items-center justify-center border border-white/10">
+            <ShieldCheck className="w-5 h-5 text-brand-teal" />
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xs font-bold text-white tracking-widest uppercase">Sobre</span>
+          </div>
+        </div>
+        
+        <button 
+          onClick={onBack}
+          className="px-6 py-2 rounded-full bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-all text-[10px] font-bold uppercase tracking-widest"
+        >
+          Voltar
+        </button>
+      </header>
+
+      <div className="relative z-10 w-full">
+        {/* 2. HERO: Staggered Reveal Animation */}
+        <section className="h-[80vh] w-full flex flex-col items-center justify-center px-6 text-center">
+          <motion.div
+            style={{ y: textY }}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { 
+                opacity: 1,
+                transition: { staggerChildren: 0.2 }
+              }
+            }}
+          >
+            <motion.span 
+              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+              className="inline-block text-brand-teal text-[10px] md:text-xs font-black uppercase tracking-[0.8em] mb-8"
+            >
+              Haja Clean Facilities
+            </motion.span>
+            
+            <motion.h1 
+              variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}
+              className="text-5xl md:text-8xl font-display font-bold text-white mb-10 tracking-tight leading-[0.9]"
+            >
+              EXCELÊNCIA <br />
+              <span className="text-xl md:text-3xl block my-4 text-brand-teal/60 tracking-[0.5em] font-light italic">EM</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-teal to-white/60">HIGIENIZAÇÃO</span>
+            </motion.h1>
+
+            <motion.div 
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+              className="h-16 w-px bg-gradient-to-b from-brand-teal to-transparent mx-auto mt-12"
+            />
+          </motion.div>
+        </section>
+
+        <section className="w-full max-w-6xl mx-auto px-6 py-24 space-y-48">
+          {/* Seção 1: Identidade e Autoridade */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 1, ease: "easeOut" }}>
+              <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-8 leading-tight">Autoridade em <br /><span className="text-brand-teal">Limpeza Técnica</span></h2>
+              <p className="text-white/60 text-lg md:text-xl font-light leading-relaxed mb-8 text-justify">
+                A <span className="text-white font-bold italic">Haja Clean Facilities Services</span> não é apenas uma empresa de limpeza, mas uma parceira estratégica na preservação do patrimônio e da saúde. Nossa expertise é moldada por processos rigorosos que garantem a descontaminação real de superfícies e a manutenção impecável de infraestruturas complexas.
+              </p>
+              <div className="p-8 rounded-3xl bg-white/[0.03] border-l-4 border-brand-teal">
+                <p className="text-white/80 italic text-sm font-light">"Nossa missão é transformar ambientes através da precisão operacional, permitindo que nossos clientes operem em seu potencial máximo com total segurança sanitária."</p>
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="relative aspect-video rounded-3xl overflow-hidden border border-white/10 group">
+              <img src="/nossa_identidade.jpg" className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
+            </motion.div>
+          </div>
+
+          {/* Seção 2: Diferenciais (Impacto) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <motion.div initial={{ opacity: 0, order: 2 }} whileInView={{ opacity: 1, order: 2 }} viewport={{ once: true }} className="grid grid-cols-2 gap-6 order-2 lg:order-1">
+              {[
+                { title: "Inovação", desc: "Equipamentos de última geração e químicos sustentáveis." },
+                { title: "Rigidez", desc: "Checklists detalhados e supervisão técnica contínua." },
+                { title: "Foco", desc: "Especialização em Academias, Clínicas e Ambientes Críticos." },
+                { title: "Segurança", desc: "Treinamento intensivo e protocolos de proteção total." }
+              ].map((item, i) => (
+                <div key={i} className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all">
+                  <h4 className="text-brand-teal font-bold mb-2 uppercase text-[10px] tracking-widest">{item.title}</h4>
+                  <p className="text-white/40 text-[10px] leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 30, order: 1 }} whileInView={{ opacity: 1, x: 0, order: 1 }} viewport={{ once: true }} className="order-1 lg:order-2">
+              <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-8 leading-tight">Por que escolher a <br /><span className="text-brand-coral">Haja Clean?</span></h2>
+              <p className="text-white/50 text-lg md:text-xl font-light leading-relaxed text-justify">
+                Entendemos que cada segmento possui necessidades únicas. Por isso, desenvolvemos protocolos personalizados que vão além do brilho superficial. Nosso foco é a <span className="text-white underline decoration-brand-teal underline-offset-4">higienização profunda</span>, combatendo patógenos e prolongando a vida útil de seus equipamentos de alto custo.
+              </p>
+            </motion.div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { label: "Satisfação Garantida", value: "100%", sub: "Feedback Positivo" },
+              { label: "Projetos Ativos", value: "500+", sub: "Clientes Corporativos" },
+              { label: "Suporte Técnico", value: "24/7", sub: "Atendimento Full" }
+            ].map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} whileHover={{ y: -5, borderColor: "rgba(19, 112, 103, 0.4)" }} className="p-10 rounded-[2rem] bg-white/[0.02] border border-white/5 backdrop-blur-sm group transition-all">
+                <span className="block text-4xl md:text-5xl font-bold text-white mb-2 group-hover:text-brand-teal transition-colors">{item.value}</span>
+                <span className="block text-[10px] text-white/30 uppercase tracking-[0.3em] mb-1">{item.label}</span>
+                <span className="text-[8px] text-brand-teal/50 font-bold uppercase tracking-widest">{item.sub}</span>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        <footer className="w-full py-32 flex flex-col items-center border-t border-white/5">
+          <p className="text-white/10 text-[8px] md:text-[10px] tracking-[0.8em] uppercase text-center">Haja Clean Facilities • Tecnologia em Higienização</p>
+        </footer>
+      </div>
+    </motion.div>
+  );
+};
+
+const ContactPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[200] bg-[#050505] flex flex-col overflow-y-auto"
+    >
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div className="absolute top-[20%] right-[10%] w-[50%] h-[50%] bg-brand-teal/5 blur-[150px] rounded-full" />
+        <div className="absolute bottom-[20%] left-[10%] w-[50%] h-[50%] bg-brand-coral/5 blur-[150px] rounded-full" />
+      </div>
+
+      <header className="sticky top-0 w-full h-20 px-6 md:px-12 flex items-center justify-between bg-black/40 backdrop-blur-xl border-b border-white/5 z-50">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center border border-gray-100 overflow-hidden">
+            <img src="/logo.jpeg" alt="Logo Haja Clean" className="w-full h-full object-cover" />
+          </div>
+          <div className="flex flex-col text-white">
+            <span className="text-sm font-bold text-brand-coral leading-none">Haja Clean</span>
+            <span translate="no" className="text-[8px] tracking-widest text-brand-teal font-bold notranslate uppercase leading-none mt-1">Contato</span>
+          </div>
+        </div>
+        <button 
+          onClick={onBack}
+          className="px-6 py-2 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all text-[10px] font-bold uppercase tracking-widest"
+        >
+          Voltar
+        </button>
+      </header>
+
+      <main className="relative z-10 w-full max-w-6xl mx-auto px-6 py-24">
+        <div className="text-center mb-24">
+          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-7xl font-display font-bold text-white mb-6">Vamos Iniciar uma <br /><span className="text-brand-teal">Parceria de Sucesso?</span></motion.h1>
+          <p className="text-white/40 text-sm md:text-base max-w-2xl mx-auto uppercase tracking-[0.4em] font-light">Canais de atendimento exclusivos para sua empresa</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Telefone Fixo */}
+          <a href="tel:1143061777" className="block outline-none">
+            <motion.div 
+              whileHover={{ y: -10, borderColor: "rgba(19, 112, 103, 0.4)", backgroundColor: "rgba(255, 255, 255, 0.05)" }} 
+              className="p-10 h-full rounded-[2.5rem] bg-white/[0.03] border border-white/10 backdrop-blur-xl flex flex-col items-center text-center group transition-all"
+            >
+              <div className="w-16 h-16 rounded-2xl bg-brand-teal/20 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                <Phone className="w-8 h-8 text-brand-teal" />
+              </div>
+              <span className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-bold">Telefone Fixo</span>
+              <span className="text-2xl font-bold text-white group-hover:text-brand-teal transition-colors">11 4306-1777</span>
+            </motion.div>
+          </a>
+
+          {/* WhatsApp Comercial */}
+          <a href="https://wa.me/5511964768536" target="_blank" rel="noopener noreferrer" className="block outline-none">
+            <motion.div 
+              whileHover={{ y: -10, borderColor: "rgba(19, 112, 103, 0.4)", backgroundColor: "rgba(255, 255, 255, 0.05)" }} 
+              className="p-10 h-full rounded-[2.5rem] bg-white/[0.03] border border-white/10 backdrop-blur-xl flex flex-col items-center text-center group transition-all"
+            >
+              <div className="w-16 h-16 rounded-2xl bg-brand-teal/20 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                <MessageSquare className="w-8 h-8 text-brand-teal" />
+              </div>
+              <span className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-bold">WhatsApp Comercial</span>
+              <span className="text-2xl font-bold text-white group-hover:text-brand-teal transition-colors">11 96476-8536</span>
+            </motion.div>
+          </a>
+
+          {/* Suporte Técnico */}
+          <a href="https://wa.me/5511971864714" target="_blank" rel="noopener noreferrer" className="block outline-none">
+            <motion.div 
+              whileHover={{ y: -10, borderColor: "rgba(19, 112, 103, 0.4)", backgroundColor: "rgba(255, 255, 255, 0.05)" }} 
+              className="p-10 h-full rounded-[2.5rem] bg-white/[0.03] border border-white/10 backdrop-blur-xl flex flex-col items-center text-center group transition-all"
+            >
+              <div className="w-16 h-16 rounded-2xl bg-brand-teal/20 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                <MessageSquare className="w-8 h-8 text-brand-teal" />
+              </div>
+              <span className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-bold">Suporte Técnico</span>
+              <span className="text-2xl font-bold text-white group-hover:text-brand-teal transition-colors">11 97186-4714</span>
+            </motion.div>
+          </a>
+          {/* E-mail */}
+          <a href="mailto:comercial@hajaclean.com.br" className="lg:col-span-3 block outline-none">
+            <motion.div 
+              whileHover={{ y: -10, borderColor: "rgba(19, 112, 103, 0.4)", backgroundColor: "rgba(255, 255, 255, 0.05)" }} 
+              className="p-12 h-full rounded-[3rem] bg-gradient-to-br from-brand-teal/10 to-transparent border border-brand-teal/20 backdrop-blur-xl flex flex-col items-center text-center group transition-all"
+            >
+              <div className="w-20 h-20 rounded-full bg-brand-teal/20 flex items-center justify-center mb-8 group-hover:rotate-12 transition-transform">
+                <Mail className="w-10 h-10 text-brand-teal" />
+              </div>
+              <span className="text-xs text-brand-teal font-black uppercase tracking-[0.5em] mb-4">E-mail Corporativo</span>
+              <span className="text-2xl md:text-4xl font-display font-bold text-white group-hover:text-brand-teal transition-colors break-all">
+                comercial@hajaclean.com.br
+              </span>
+            </motion.div>
+          </a>
+        </div>
+      </main>
+      <footer className="mt-auto py-12 flex flex-col items-center border-t border-white/5">
+        <p className="text-white/20 text-[10px] tracking-[0.5em] uppercase">Haja Clean • Atendimento VIP</p>
+      </footer>
+    </motion.div>
+  );
+};
+
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>("catalog");
   const [currentSection, setCurrentSection] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const totalSections = 3;
+
+  const navItems = [
+    { id: "about", label: "Sobre", icon: Users },
+    { id: "products", label: "Produtos", icon: Sparkles },
+    { id: "gym-cleaning", label: "Academia", icon: Dumbbell },
+    { id: "clinic-cleaning", label: "Clínicas", icon: Stethoscope },
+    { id: "contact", label: "Contatos", icon: Phone },
+  ];
 
   const paginate = (newDirection: number) => {
     const nextSection = currentSection + newDirection;
@@ -1109,7 +1592,7 @@ export default function App() {
         <div key="catalog" className="min-h-screen w-full relative">
           {/* Navegação Lateral (Dots) */}
           <div className="fixed right-8 top-1/2 -translate-y-1/2 z-[110] hidden md:flex flex-col gap-5">
-            {Array.from({ length: totalSections }).map((_, i) => (
+            {[0, 1, 2].map((i) => (
               <button
                 key={i}
                 onClick={() => {
@@ -1124,8 +1607,8 @@ export default function App() {
             ))}
           </div>
 
-          {/* Botões de Navegação Laterais (Estilo Catálogo Premium) - Agora menores e mais acima */}
-          <div className="fixed top-[120px] md:top-[160px] left-0 right-0 pointer-events-none z-[105] flex items-center justify-between px-6 md:px-12">
+          {/* Botões de Navegação Laterais */}
+          <div className="fixed top-[160px] left-0 right-0 pointer-events-none z-[105] flex items-center justify-between px-6 md:px-12">
             {currentSection > 0 ? (
               <motion.button
                 initial={{ opacity: 0, x: -20 }}
@@ -1149,24 +1632,89 @@ export default function App() {
             )}
           </div>
 
-          {/* Botões de Academias e Clínicas Fixo no Topo Direito */}
-          <div className="fixed top-4 right-4 md:top-8 md:right-8 z-[110] flex flex-col md:flex-row gap-2 md:gap-4">
-            <button
-              onClick={() => setCurrentPage("gym-cleaning")}
-              className="bg-white/60 backdrop-blur-2xl px-3 py-2 md:px-6 md:py-3 rounded-full border border-white/40 shadow-2xl flex items-center gap-2 md:gap-3 hover:bg-white hover:scale-105 transition-all group"
+          {/* NAVEGAÇÃO DESKTOP (CENTRALIZADA) */}
+          <div className="fixed top-6 left-0 right-0 z-[120] hidden lg:flex justify-center px-6">
+            <nav className="bg-white/40 backdrop-blur-2xl border border-white/40 shadow-2xl rounded-full px-2 py-2 flex items-center gap-2">
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setCurrentPage(item.id as Page)}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-full hover:bg-white/60 transition-all group"
+                >
+                  <item.icon className="w-3.5 h-3.5 text-brand-teal" />
+                  <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-premium-dark">{item.label}</span>
+                </button>
+              ))}
+            </nav>
+          </div>
+
+          {/* BOTÃO HAMBÚRGUER MOBILE/TABLET (CANTO DA TELA) */}
+          <div className="fixed top-6 right-6 z-[120] lg:hidden">
+            <button 
+              onClick={() => setIsMenuOpen(true)}
+              className="w-12 h-12 rounded-full bg-white/60 backdrop-blur-2xl border border-white/40 shadow-2xl flex items-center justify-center text-brand-teal hover:scale-110 transition-all"
             >
-              <Dumbbell className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-teal" />
-              <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.15em] md:tracking-[0.25em] text-premium-dark">Academia</span>
-            </button>
- 
-            <button
-              onClick={() => setCurrentPage("clinic-cleaning")}
-              className="bg-white/60 backdrop-blur-2xl px-3 py-2 md:px-6 md:py-3 rounded-full border border-white/40 shadow-2xl flex items-center gap-2 md:gap-3 hover:bg-white hover:scale-105 transition-all group"
-            >
-              <Stethoscope className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-teal" />
-              <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.15em] md:tracking-[0.25em] text-premium-dark">Clínicas</span>
+              <Menu className="w-6 h-6" />
             </button>
           </div>
+
+          {/* OVERLAY MENU MOBILE/TABLET */}
+          <AnimatePresence>
+            {isMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, x: '100%' }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: '100%' }}
+                className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-3xl flex flex-col p-8 lg:hidden"
+              >
+                <div className="flex justify-between items-center mb-16">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-white rounded-xl overflow-hidden shadow-2xl">
+                      <img src="/logo.jpeg" className="w-full h-full object-cover" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-white font-black tracking-[0.2em] uppercase text-xs">Haja Clean</span>
+                      <span className="text-brand-teal font-bold text-[8px] uppercase tracking-widest">Facilities Services</span>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => setIsMenuOpen(false)}
+                    className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-all"
+                  >
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
+
+                <div className="flex flex-col gap-4">
+                  {navItems.map((item, i) => (
+                    <motion.button
+                      key={item.id}
+                      initial={{ opacity: 0, x: 30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.1 }}
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        setCurrentPage(item.id as Page);
+                      }}
+                      className="flex items-center justify-between p-8 rounded-[2rem] bg-white/5 border border-white/5 text-white group active:bg-brand-teal/20 transition-all"
+                    >
+                      <div className="flex items-center gap-6">
+                        <div className="w-12 h-12 rounded-2xl bg-brand-teal/10 flex items-center justify-center group-active:scale-90 transition-transform">
+                          <item.icon className="w-6 h-6 text-brand-teal" />
+                        </div>
+                        <span className="text-base font-bold uppercase tracking-[0.2em]">{item.label}</span>
+                      </div>
+                      <ArrowRight className="w-5 h-5 opacity-20 group-active:opacity-100 transition-opacity" />
+                    </motion.button>
+                  ))}
+                </div>
+
+                <div className="mt-auto text-center border-t border-white/5 pt-8">
+                  <p className="text-[10px] tracking-[0.8em] uppercase text-white/30">Haja Clean • 2026</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           <Header />
           
@@ -1212,8 +1760,20 @@ export default function App() {
         <GymCleaningPage 
           onBack={() => setCurrentPage("catalog")} 
         />
-      ) : (
+      ) : currentPage === "clinic-cleaning" ? (
         <ClinicCleaningPage 
+          onBack={() => setCurrentPage("catalog")} 
+        />
+      ) : currentPage === "about" ? (
+        <AboutPage 
+          onBack={() => setCurrentPage("catalog")} 
+        />
+      ) : currentPage === "contact" ? (
+        <ContactPage 
+          onBack={() => setCurrentPage("catalog")} 
+        />
+      ) : (
+        <ProductsPage 
           onBack={() => setCurrentPage("catalog")} 
         />
       )}
