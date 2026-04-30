@@ -707,12 +707,22 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     </motion.div>
   );
 };
-const Header = () => {
+const Header = ({ isScrolled }: { isScrolled: boolean }) => {
   return (
-    <header className="fixed top-6 left-6 md:left-8 lg:left-12 z-[100] p-0 flex items-center">
+    <header 
+      className={`fixed z-[100] transition-all duration-700 ease-in-out flex items-center ${
+        isScrolled 
+          ? "top-4 left-4 scale-75 opacity-90 origin-left" 
+          : "top-6 left-6 md:left-8 lg:left-12 scale-100 opacity-100"
+      }`}
+    >
       {/* Card com Efeito Vidro 3D - Fixo no Topo Esquerdo */}
-      <div className="flex items-center gap-2 md:gap-4 bg-white/60 backdrop-blur-2xl px-3 py-2 md:px-6 md:py-3 rounded-xl md:rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/40 ring-1 ring-brand-teal/5">
-        <div className="relative w-8 h-8 md:w-14 md:h-14 flex items-center justify-center">
+      <div className={`flex items-center gap-2 md:gap-3 bg-white/60 backdrop-blur-2xl px-2 py-1.5 md:px-5 md:py-2.5 rounded-xl md:rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/40 ring-1 ring-brand-teal/5 transition-all duration-700 ${
+        isScrolled ? "py-1.5 px-3" : ""
+      }`}>
+        <div className={`relative flex items-center justify-center transition-all duration-700 ${
+          isScrolled ? "w-5 h-5 md:w-8 md:h-8" : "w-7 h-7 md:w-11 md:h-11"
+        }`}>
           <svg viewBox="0 0 120 120" className="w-full h-full drop-shadow-md">
             <text x="10" y="85" className="fill-brand-teal" style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', fontSize: '85px' }}>H</text>
             <text x="45" y="85" className="fill-brand-coral" style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', fontSize: '85px' }}>C</text>
@@ -720,11 +730,11 @@ const Header = () => {
             <path d="M100 48 L115 55 L100 62 Z" fill="var(--color-brand-teal)" />
           </svg>
         </div>
-        <div className="flex flex-col">
-          <h1 className="text-sm md:text-xl font-serif font-bold tracking-tight text-brand-coral leading-none">
+        <div className={`flex flex-col transition-all duration-700 ${isScrolled ? "opacity-0 w-0 overflow-hidden" : "opacity-100"}`}>
+          <h1 className="text-[12px] md:text-base font-serif font-bold tracking-tight text-brand-coral leading-none">
             Haja Clean
           </h1>
-          <span translate="no" className="text-[7px] md:text-[12px] tracking-[0.2em] md:tracking-[0.3em] text-brand-teal font-bold mt-0.5 md:mt-1 notranslate">
+          <span translate="no" className="text-[6px] md:text-[9px] tracking-[0.2em] md:tracking-[0.3em] text-brand-teal font-bold mt-0.5 md:mt-1 notranslate uppercase">
             Facilities Services
           </span>
         </div>
@@ -1545,7 +1555,17 @@ export default function App() {
   const [currentSection, setCurrentSection] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const totalSections = 3;
+
+  // Monitorar scroll para transformações
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navItems = [
     { id: "products", label: "Produtos", icon: Sparkles },
@@ -1632,17 +1652,37 @@ export default function App() {
             )}
           </div>
 
-          {/* NAVEGAÇÃO DESKTOP (CENTRALIZADA) */}
-          <div className="fixed top-6 left-0 right-0 z-[120] hidden lg:flex justify-center px-6">
-            <nav className="bg-white/40 backdrop-blur-2xl border border-white/40 shadow-2xl rounded-full px-2 py-2 flex items-center gap-2">
+          {/* NAVEGAÇÃO DESKTOP (CENTRALIZADA -> VERTICAL NO SCROLL) */}
+          <div className={`fixed z-[120] transition-all duration-700 ease-in-out hidden lg:flex ${
+            isScrolled 
+              ? "top-1/2 right-6 -translate-y-1/2 flex-col" 
+              : "top-6 left-0 right-0 justify-center"
+          }`}>
+            <nav className={`bg-white/40 backdrop-blur-2xl border border-white/40 shadow-2xl rounded-[2.5rem] p-2 flex transition-all duration-700 ${
+              isScrolled ? "flex-col gap-4" : "flex-row gap-2"
+            }`}>
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => setCurrentPage(item.id as Page)}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-full hover:bg-white/60 transition-all group"
+                  className={`flex items-center gap-3 rounded-full hover:bg-white/60 transition-all group ${
+                    isScrolled ? "p-4" : "px-4 py-2.5"
+                  }`}
+                  title={item.label}
                 >
-                  <item.icon className="w-3.5 h-3.5 text-brand-teal" />
-                  <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-premium-dark">{item.label}</span>
+                  <item.icon className="w-4 h-4 text-brand-teal" />
+                  {!isScrolled && (
+                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-premium-dark">{item.label}</span>
+                  )}
+                  {isScrolled && (
+                    <motion.span 
+                      initial={{ opacity: 0, x: 10 }}
+                      whileHover={{ opacity: 1, x: 0 }}
+                      className="absolute right-full mr-4 px-3 py-1 bg-premium-dark text-white text-[8px] uppercase tracking-widest rounded opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity whitespace-nowrap"
+                    >
+                      {item.label}
+                    </motion.span>
+                  )}
                 </button>
               ))}
             </nav>
@@ -1658,7 +1698,6 @@ export default function App() {
             </button>
           </div>
 
-          {/* OVERLAY MENU MOBILE/TABLET */}
           <AnimatePresence>
             {isMenuOpen && (
               <motion.div
@@ -1716,7 +1755,7 @@ export default function App() {
             )}
           </AnimatePresence>
 
-          <Header />
+          <Header isScrolled={isScrolled} />
           
           <main className="min-h-screen w-full relative bg-premium-gray">
             <AnimatePresence initial={false} mode="wait">
