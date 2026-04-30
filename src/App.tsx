@@ -1656,9 +1656,14 @@ export default function App() {
             )}
           </div>
 
-          {/* NAVEGAÇÃO DESKTOP (SEMPRE HORIZONTAL) */}
+          {/* NAVEGAÇÃO DESKTOP (HORIZONAL -> HAMBURGUER NO SCROLL) */}
           <motion.div 
-            layout
+            initial={false}
+            animate={{ 
+              opacity: isScrolled ? 0 : 1,
+              y: isScrolled ? -20 : 0,
+              pointerEvents: isScrolled ? "none" : "auto"
+            }}
             className="fixed top-6 left-0 right-0 z-[120] hidden lg:flex justify-center px-6"
           >
             <motion.nav 
@@ -1678,8 +1683,10 @@ export default function App() {
             </motion.nav>
           </motion.div>
 
-          {/* BOTÃO HAMBÚRGUER MOBILE/TABLET (CANTO DA TELA) */}
-          <div className="fixed top-6 right-6 z-[120] lg:hidden">
+          {/* BOTÃO HAMBÚRGUER (UNIVERSAL NO SCROLL / SEMPRE NO MOBILE) */}
+          <div className={`fixed top-6 right-6 z-[120] transition-all duration-500 ${
+            isScrolled ? "flex" : "lg:hidden flex"
+          }`}>
             <button 
               onClick={() => setIsMenuOpen(true)}
               className="w-12 h-12 rounded-full bg-white/60 backdrop-blur-2xl border border-white/40 shadow-2xl flex items-center justify-center text-brand-teal hover:scale-110 transition-all"
