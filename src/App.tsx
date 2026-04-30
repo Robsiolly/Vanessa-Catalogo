@@ -27,13 +27,86 @@ import {
   Mail,
   MessageSquare,
   Menu,
-  X
+  X,
+  ExternalLink
 } from 'lucide-react';
+
+// --- Animation Variants ---
+const fadeIn = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+};
+
+const slideUp = {
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
+  viewport: { once: true, margin: "-50px" }
+};
+
+const staggerContainer = {
+  initial: {},
+  whileInView: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  },
+  viewport: { once: true }
+};
+
+const premiumHover = {
+  scale: 1.02,
+  y: -5,
+  transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] }
+};
+
+const textReveal = {
+  initial: { y: "100%", opacity: 0 },
+  animate: { y: 0, opacity: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
+};
 
 // --- Types ---
 type Page = "catalog" | "gym-cleaning" | "clinic-cleaning" | "products" | "about" | "contact";
 
 // --- Components ---
+
+const Counter: React.FC<{ value: number }> = ({ value }) => {
+  const [count, setCount] = useState(0);
+  const nodeRef = useRef(null);
+  
+  useEffect(() => {
+    let start = 0;
+    const end = value;
+    const duration = 2000;
+    let timer: any;
+    
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        const increment = end / (duration / 16);
+        const updateCount = () => {
+          start += increment;
+          if (start < end) {
+            setCount(Math.floor(start));
+            timer = requestAnimationFrame(updateCount);
+          } else {
+            setCount(end);
+          }
+        };
+        updateCount();
+        observer.disconnect();
+      }
+    }, { threshold: 0.5 });
+    
+    if (nodeRef.current) observer.observe(nodeRef.current);
+    return () => {
+      if (timer) cancelAnimationFrame(timer);
+      observer.disconnect();
+    };
+  }, [value]);
+  
+  return <span ref={nodeRef} className="text-4xl md:text-5xl font-bold text-white group-hover:text-brand-teal transition-colors">{count}</span>;
+};
+
 
 const ClinicCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -148,21 +221,29 @@ const ClinicCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 garantindo segurança biológica e um ambiente acolhedor para pacientes e profissionais.
               </p>
 
-              <ul className="space-y-4">
+              <motion.ul 
+                variants={staggerContainer}
+                initial="initial"
+                whileInView="whileInView"
+                viewport={{ once: true }}
+                className="space-y-4"
+              >
                 {["Desinfecção hospitalar", "Gestão de resíduos", "Limpeza técnica", "Sanitização"].map((item, i) => (
                   <motion.li 
                     key={i}
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.4 + (i * 0.1) }}
-                    className="flex items-center gap-2 text-gray-700 font-medium text-xs md:text-sm"
+                    variants={slideUp}
+                    className="flex items-center gap-3 text-gray-700 font-medium text-xs md:text-sm group"
                   >
-                    <CheckCircle2 className="w-4 h-4 text-brand-teal" />
+                    <motion.div
+                      whileHover={{ scale: 1.2, rotate: 360 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <CheckCircle2 className="w-4 h-4 text-brand-teal group-hover:text-brand-coral transition-colors" />
+                    </motion.div>
                     {item}
                   </motion.li>
                 ))}
-              </ul>
+              </motion.ul>
             </motion.div>
           </div>
 
@@ -476,21 +557,29 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 garantindo segurança, saúde e excelência operacional para seus alunos e colaboradores.
               </p>
 
-              <ul className="space-y-4">
+              <motion.ul 
+                variants={staggerContainer}
+                initial="initial"
+                whileInView="whileInView"
+                viewport={{ once: true }}
+                className="space-y-4"
+              >
                 {["Limpeza de equipamentos", "Tatames", "Pisos", "Sanitização"].map((item, i) => (
                   <motion.li 
                     key={i}
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.4 + (i * 0.1) }}
-                    className="flex items-center gap-2 text-gray-700 font-medium text-xs md:text-sm"
+                    variants={slideUp}
+                    className="flex items-center gap-3 text-gray-700 font-medium text-xs md:text-sm group"
                   >
-                    <CheckCircle2 className="w-4 h-4 text-brand-teal" />
+                    <motion.div
+                      whileHover={{ scale: 1.2, rotate: 360 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <CheckCircle2 className="w-4 h-4 text-brand-teal group-hover:text-brand-coral transition-colors" />
+                    </motion.div>
                     {item}
                   </motion.li>
                 ))}
-              </ul>
+              </motion.ul>
             </motion.div>
           </div>
 
@@ -717,19 +806,31 @@ const Header = ({ isScrolled }: { isScrolled: boolean }) => {
       }`}
     >
       {/* Card com Efeito Vidro 3D - Fixo no Topo Esquerdo */}
-      <div className={`flex items-center gap-2 md:gap-3 bg-white/60 backdrop-blur-2xl px-2 py-1.5 md:px-5 md:py-2.5 rounded-xl md:rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/40 ring-1 ring-brand-teal/5 transition-all duration-700 ${
+      <motion.div 
+        whileHover={{ scale: 1.02 }}
+        className={`flex items-center gap-2 md:gap-3 bg-white/60 backdrop-blur-2xl px-2 py-1.5 md:px-5 md:py-2.5 rounded-xl md:rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/40 ring-1 ring-brand-teal/5 transition-all duration-700 ${
         isScrolled ? "py-1.5 px-3" : ""
       }`}>
-        <div className={`relative flex items-center justify-center transition-all duration-700 ${
+        <motion.div 
+          animate={isScrolled ? {} : { 
+            boxShadow: ["0 0 0px rgba(19, 112, 103, 0)", "0 0 20px rgba(19, 112, 103, 0.1)", "0 0 0px rgba(19, 112, 103, 0)"]
+          }}
+          transition={{ duration: 3, repeat: Infinity }}
+          className={`relative flex items-center justify-center transition-all duration-700 ${
           isScrolled ? "w-5 h-5 md:w-8 md:h-8" : "w-7 h-7 md:w-11 md:h-11"
         }`}>
           <svg viewBox="0 0 120 120" className="w-full h-full drop-shadow-md">
             <text x="10" y="85" className="fill-brand-teal" style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', fontSize: '85px' }}>H</text>
             <text x="45" y="85" className="fill-brand-coral" style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', fontSize: '85px' }}>C</text>
-            <line x1="25" y1="55" x2="105" y2="55" stroke="var(--color-brand-teal)" strokeWidth="3" />
+            <motion.line 
+              initial={{ x1: 25, x2: 25 }}
+              animate={{ x2: 105 }}
+              transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
+              x1="25" y1="55" x2="105" y2="55" stroke="var(--color-brand-teal)" strokeWidth="3" 
+            />
             <path d="M100 48 L115 55 L100 62 Z" fill="var(--color-brand-teal)" />
           </svg>
-        </div>
+        </motion.div>
         <div className={`flex flex-col transition-all duration-700 ${isScrolled ? "opacity-0 w-0 overflow-hidden" : "opacity-100"}`}>
           <h1 className="text-[12px] md:text-base font-serif font-bold tracking-tight text-brand-coral leading-none">
             Haja Clean
@@ -738,7 +839,7 @@ const Header = ({ isScrolled }: { isScrolled: boolean }) => {
             Facilities Services
           </span>
         </div>
-      </div>
+      </motion.div>
     </header>
   );
 };
@@ -769,62 +870,128 @@ const HeroSection = ({ onNext }: { onNext: () => void }) => {
   return (
     <section className="relative min-h-screen w-full flex flex-col items-center justify-center bg-black overflow-hidden px-6 lg:px-12 py-32">
       {/* BACKGROUND VIDEO */}
-      <div className="absolute inset-0 z-0">
-        <video 
-          autoPlay 
-          muted 
-          loop 
-          playsInline 
-          className="w-full h-full object-cover opacity-60 scale-105"
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <motion.div 
+          animate={{ scale: [1, 1.05, 1] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          className="w-full h-full"
         >
-          <source src="/1.mp4" type="video/mp4" />
-        </video>
+          <video 
+            autoPlay 
+            muted 
+            loop 
+            playsInline 
+            className="w-full h-full object-cover opacity-60"
+          >
+            <source src="/1.mp4" type="video/mp4" />
+          </video>
+        </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/80" />
+        
       </div>
 
       <div className="relative z-20 w-full max-w-7xl flex flex-col items-center text-center">
         {/* Header Institucional */}
         <motion.div
-          initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
           className="mb-16"
         >
           <div className="flex justify-center items-center gap-4 mb-8">
-            <div className="h-px w-12 bg-brand-coral" />
-            <span className="text-brand-coral font-black tracking-[0.4em] uppercase text-[10px] md:text-xs">Bem vindo à Haja Clean</span>
-            <div className="h-px w-12 bg-brand-coral" />
+            <motion.div 
+              initial={{ width: 0 }}
+              animate={{ width: 48 }}
+              transition={{ duration: 1, delay: 0.5 }}
+              className="h-px bg-brand-coral" 
+            />
+            <motion.span 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-brand-coral font-black tracking-[0.4em] uppercase text-[10px] md:text-xs"
+            >
+              Bem vindo à Haja Clean
+            </motion.span>
+            <motion.div 
+              initial={{ width: 0 }}
+              animate={{ width: 48 }}
+              transition={{ duration: 1, delay: 0.5 }}
+              className="h-px bg-brand-coral" 
+            />
           </div>
 
-          <h2 className="text-5xl md:text-7xl lg:text-9xl font-serif font-bold text-gray-400 tracking-tighter leading-[0.9]">
-            HAJA CLEAN
+          <h2 className="text-5xl md:text-7xl lg:text-9xl font-serif font-bold text-white tracking-tighter leading-[0.9] flex flex-wrap justify-center gap-x-6">
+            {"HAJA CLEAN".split(" ").map((word, i) => (
+              <span key={i} className="overflow-hidden inline-block">
+                <motion.span
+                  initial={{ y: "100%" }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: 1, delay: 0.4 + (i * 0.2), ease: [0.22, 1, 0.36, 1] }}
+                  className="inline-block"
+                >
+                  {word}
+                </motion.span>
+              </span>
+            ))}
           </h2>
           
-          <p className="text-xl md:text-3xl text-white/50 font-light tracking-tight mt-6 max-w-3xl mx-auto">
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1 }}
+            className="text-xl md:text-3xl text-white/50 font-light tracking-tight mt-6 max-w-3xl mx-auto"
+          >
             Limpeza Especializada para <br />
-            <span className="text-gray-400 font-medium border-b-2 border-brand-teal pb-1">Academias e Studios</span>
-          </p>
+            <span className="text-gray-400 font-medium relative inline-block">
+              Academias e Studios
+              <motion.span 
+                initial={{ width: 0 }}
+                animate={{ width: "100%" }}
+                transition={{ duration: 1.5, delay: 1.5 }}
+                className="absolute bottom-1 left-0 h-0.5 bg-brand-teal"
+              />
+            </span>
+          </motion.p>
         </motion.div>
 
         {/* Info Slider Section */}
-        <div className="w-full max-w-2xl relative">
-          <div className="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-8 md:p-12 overflow-hidden shadow-2xl relative group">
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.8 }}
+          className="w-full max-w-2xl relative"
+        >
+          <motion.div 
+            whileHover={{ scale: 1.01, transition: { duration: 0.4 } }}
+            className="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-8 md:p-12 overflow-hidden shadow-2xl relative group"
+          >
             {/* Glossy accent */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-teal/20 blur-[60px] rounded-full -mr-16 -mt-16" />
+            <motion.div 
+              animate={{ 
+                scale: [1, 1.2, 1],
+                opacity: [0.2, 0.3, 0.2]
+              }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-0 right-0 w-32 h-32 bg-brand-teal/20 blur-[60px] rounded-full -mr-16 -mt-16" 
+            />
             
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentCard}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.05 }}
+                initial={{ opacity: 0, x: 20, filter: "blur(10px)" }}
+                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, x: -20, filter: "blur(10px)" }}
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 className="relative z-10"
               >
                 <div className="flex items-center gap-6 mb-8">
-                   <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10">
+                   <motion.div 
+                     whileHover={{ rotate: 10, scale: 1.1 }}
+                     className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10"
+                   >
                     {cards[currentCard].icon}
-                   </div>
+                   </motion.div>
                    <h3 className="text-brand-coral font-black tracking-[0.3em] uppercase text-xs">
                     {cards[currentCard].title}
                    </h3>
@@ -847,22 +1014,26 @@ const HeroSection = ({ onNext }: { onNext: () => void }) => {
                 ))}
               </div>
               <div className="flex gap-4">
-                <button 
+                <motion.button 
+                  whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.1)" }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={prevCard} 
-                  className="p-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-all shadow-xl"
+                  className="p-3 rounded-full bg-white/5 border border-white/10 text-white transition-all shadow-xl"
                 >
                   <ChevronLeft className="w-5 h-5" />
-                </button>
-                <button 
+                </motion.button>
+                <motion.button 
+                  whileHover={{ scale: 1.1, backgroundColor: "rgba(19, 112, 103, 0.8)" }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={nextCard} 
-                  className="p-3 rounded-full bg-brand-teal hover:bg-brand-teal/80 text-white transition-all shadow-xl"
+                  className="p-3 rounded-full bg-brand-teal text-white transition-all shadow-xl"
                 >
                   <ChevronRight className="w-5 h-5" />
-                </button>
+                </motion.button>
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Explore Button */}
         <motion.button
@@ -883,6 +1054,50 @@ const HeroSection = ({ onNext }: { onNext: () => void }) => {
         </motion.button>
       </div>
     </section>
+  );
+};
+
+const MagneticButton: React.FC<{ children: React.ReactNode, onClick?: () => void, className?: string, variant?: "primary" | "secondary" }> = ({ children, onClick, className, variant = "primary" }) => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const ref = useRef<HTMLButtonElement>(null);
+
+  const handleMouse = (e: React.MouseEvent) => {
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = ref.current!.getBoundingClientRect();
+    const x = clientX - (left + width / 2);
+    const y = clientY - (top + height / 2);
+    setPosition({ x, y });
+  };
+
+  const reset = () => setPosition({ x: 0, y: 0 });
+
+  return (
+    <motion.button
+      ref={ref}
+      onMouseMove={handleMouse}
+      onMouseLeave={reset}
+      onClick={onClick}
+      animate={{ x: position.x * 0.1, y: position.y * 0.1 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20, mass: 0.1 }}
+      className={className}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+    >
+      <motion.span 
+        animate={{ x: position.x * 0.1, y: position.y * 0.1 }}
+        className="relative z-10 block"
+      >
+        {children}
+      </motion.span>
+      {variant === "primary" && (
+        <motion.div 
+          initial={{ x: "-100%" }}
+          whileHover={{ x: "100%" }}
+          transition={{ duration: 0.5 }}
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"
+        />
+      )}
+    </motion.button>
   );
 };
 
@@ -1008,26 +1223,43 @@ const ServicesSection = ({ onPrev }: { onPrev: () => void }) => {
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentIndex}
-                  initial={{ opacity: 0, rotateY: 45, x: 50 }}
-                  animate={{ opacity: 1, rotateY: 0, x: 0 }}
-                  exit={{ opacity: 0, rotateY: -45, x: -50 }}
+                  initial={{ opacity: 0, rotateY: 45, x: 50, filter: "blur(10px)" }}
+                  animate={{ opacity: 1, rotateY: 0, x: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, rotateY: -45, x: -50, filter: "blur(10px)" }}
                   transition={{ type: "spring", stiffness: 200, damping: 25 }}
                   whileHover={{ 
                     rotateX: 5, 
                     rotateY: -5,
                     scale: 1.02,
-                    transition: { duration: 0.2 }
+                    boxShadow: "0 30px 60px rgba(19, 112, 103, 0.15)",
+                    transition: { duration: 0.3 }
                   }}
-                  className="w-full max-w-[280px] sm:max-w-md aspect-video bg-white/30 backdrop-blur-2xl p-3 md:p-6 rounded-[1.2rem] md:rounded-[1.5rem] border border-white/50 shadow-[0_15px_35px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center text-center gap-1.5 md:gap-3 relative overflow-hidden group"
+                  className="w-full max-w-[280px] sm:max-w-md aspect-video bg-white/30 backdrop-blur-2xl p-3 md:p-6 rounded-[1.2rem] md:rounded-[1.5rem] border border-white/50 shadow-[0_15px_35px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center text-center gap-1.5 md:gap-3 relative overflow-hidden group cursor-pointer"
                 >
-                  {/* Reflexo de Vidro */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
+                  {/* Reflexo de Vidro Animado */}
+                  <motion.div 
+                    animate={{ 
+                      x: ["-100%", "200%"],
+                    }}
+                    transition={{ 
+                      duration: 3, 
+                      repeat: Infinity, 
+                      repeatDelay: 2,
+                      ease: "linear" 
+                    }}
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12 pointer-events-none" 
+                  />
                   
-                  <div className="text-2xl md:text-4xl mb-0.5 drop-shadow-lg">{services[currentIndex].icon}</div>
-                  <h3 className="text-sm md:text-xl font-bold text-black uppercase tracking-wider leading-tight">
+                  <motion.div 
+                    whileHover={{ scale: 1.2, rotate: 10 }}
+                    className="text-2xl md:text-4xl mb-0.5 drop-shadow-lg"
+                  >
+                    {services[currentIndex].icon}
+                  </motion.div>
+                  <h3 className="text-sm md:text-xl font-bold text-black uppercase tracking-wider leading-tight group-hover:text-brand-teal transition-colors">
                     {services[currentIndex].title}
                   </h3>
-                  <p className="text-premium-dark/80 leading-relaxed text-[10px] md:text-sm max-w-[95%] md:max-w-[90%]">
+                  <p className="text-premium-dark/80 leading-relaxed text-[10px] md:text-sm max-w-[95%] md:max-w-[90%] font-light">
                     {services[currentIndex].desc}
                   </p>
                 </motion.div>
@@ -1069,13 +1301,12 @@ const ServicesSection = ({ onPrev }: { onPrev: () => void }) => {
           </p>
         </motion.div>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="mt-10 px-8 py-4 bg-premium-dark text-white rounded-full font-bold text-xs tracking-[0.2em] uppercase shadow-xl hover:bg-brand-teal transition-all"
+        <MagneticButton
+          onClick={() => {}}
+          className="mt-10 px-8 py-4 bg-premium-dark text-white rounded-full font-bold text-xs tracking-[0.2em] uppercase shadow-xl hover:bg-brand-teal transition-all relative overflow-hidden group"
         >
           Solicitar Orçamento
-        </motion.button>
+        </MagneticButton>
       </div>
     </section>
   );
@@ -1260,11 +1491,15 @@ const ProductsPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 className="group bg-white/40 backdrop-blur-2xl p-6 md:p-8 rounded-[2rem] border border-white/60 shadow-[0_15px_35px_rgba(0,0,0,0.05)] flex flex-col items-center text-center transition-all duration-500 perspective-1000"
               >
                 <div className="w-full aspect-square rounded-2xl bg-white/80 p-6 mb-6 shadow-inner relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-brand-teal/5 to-transparent pointer-events-none" />
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    whileHover={{ opacity: 1 }}
+                    className="absolute inset-0 bg-gradient-to-tr from-brand-teal/10 via-white/20 to-transparent pointer-events-none z-10" 
+                  />
                   <img 
                     src={item.img} 
                     alt={item.name}
-                    className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
+                    className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700 relative z-0"
                   />
                 </div>
                 <h3 className="text-lg md:text-xl font-bold text-black mb-3 group-hover:text-brand-teal transition-colors">
@@ -1273,13 +1508,19 @@ const ProductsPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 <p className="text-premium-dark/60 text-sm leading-relaxed mb-6 font-light">
                   {item.desc}
                 </p>
-                <div className="mt-auto px-6 py-2.5 bg-brand-teal/5 text-brand-teal rounded-full text-[10px] font-bold uppercase tracking-[0.2em] border border-brand-teal/10 group-hover:bg-brand-teal group-hover:text-white transition-all">
-                  Aprovado
-                </div>
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  className="mt-auto px-6 py-2.5 bg-brand-teal/5 text-brand-teal rounded-full text-[10px] font-bold uppercase tracking-[0.2em] border border-brand-teal/10 group-hover:bg-brand-teal group-hover:text-white transition-all cursor-pointer"
+                >
+                  Qualidade Haja Clean
+                </motion.div>
               </motion.div>
             ))}
           </div>
         </div>
+        <footer className="w-full py-12 flex flex-col items-center border-t border-gray-100 mt-20">
+          <p className="text-gray-400 text-[10px] tracking-[0.4em] uppercase text-center px-6">Haja Clean Facilities services 2026 © Todos os direitos Reservados</p>
+        </footer>
       </div>
     </motion.div>
   );
@@ -1426,12 +1667,22 @@ const AboutPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { label: "Satisfação Garantida", value: "100%", sub: "Feedback Positivo" },
-              { label: "Projetos Ativos", value: "500+", sub: "Clientes Corporativos" },
-              { label: "Suporte Técnico", value: "24/7", sub: "Atendimento Full" }
+              { label: "Satisfação Garantida", value: 100, suffix: "%", sub: "Feedback Positivo" },
+              { label: "Projetos Ativos", value: 500, suffix: "+", sub: "Clientes Corporativos" },
+              { label: "Suporte Técnico", value: 24, suffix: "/7", sub: "Atendimento Full" }
             ].map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} whileHover={{ y: -5, borderColor: "rgba(19, 112, 103, 0.4)" }} className="p-10 rounded-[2rem] bg-white/[0.02] border border-white/5 backdrop-blur-sm group transition-all">
-                <span className="block text-4xl md:text-5xl font-bold text-white mb-2 group-hover:text-brand-teal transition-colors">{item.value}</span>
+              <motion.div 
+                key={i} 
+                initial={{ opacity: 0, y: 20 }} 
+                whileInView={{ opacity: 1, y: 0 }} 
+                transition={{ delay: i * 0.1 }} 
+                whileHover={{ y: -10, borderColor: "rgba(19, 112, 103, 0.4)", backgroundColor: "rgba(255,255,255,0.02)" }} 
+                className="p-10 rounded-[2rem] bg-white/[0.02] border border-white/5 backdrop-blur-sm group transition-all"
+              >
+                <div className="flex items-baseline gap-1">
+                  <Counter value={item.value} />
+                  <span className="text-3xl font-bold text-white group-hover:text-brand-teal transition-colors">{item.suffix}</span>
+                </div>
                 <span className="block text-[10px] text-white/30 uppercase tracking-[0.3em] mb-1">{item.label}</span>
                 <span className="text-[8px] text-brand-teal/50 font-bold uppercase tracking-widest">{item.sub}</span>
               </motion.div>
@@ -1440,7 +1691,7 @@ const AboutPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         </section>
 
         <footer className="w-full py-32 flex flex-col items-center border-t border-white/5">
-          <p className="text-white/10 text-[8px] md:text-[10px] tracking-[0.8em] uppercase text-center">Haja Clean Facilities • Tecnologia em Higienização</p>
+          <p className="text-white/10 text-[8px] md:text-[10px] tracking-[0.4em] uppercase text-center px-6">Haja Clean Facilities services 2026 © Todos os direitos Reservados</p>
         </footer>
       </div>
     </motion.div>
@@ -1544,7 +1795,7 @@ const ContactPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         </div>
       </main>
       <footer className="mt-auto py-12 flex flex-col items-center border-t border-white/5">
-        <p className="text-white/20 text-[10px] tracking-[0.5em] uppercase">Haja Clean • Atendimento VIP</p>
+        <p className="text-white/20 text-[10px] tracking-[0.5em] uppercase text-center px-6">Haja Clean Facilities services 2026 © Todos os direitos Reservados</p>
       </footer>
     </motion.div>
   );
@@ -1583,31 +1834,56 @@ export default function App() {
     }
   };
 
+  const progress = (currentSection / (totalSections - 1)) * 100;
+
+
   const variants = {
     enter: (direction: number) => ({
       x: direction === 0 ? 0 : (direction > 0 ? '100%' : '-100%'),
       opacity: 0,
-      scale: 0.95,
-      filter: "blur(10px)"
+      scale: 1.1,
+      filter: "blur(20px)",
+      transition: { duration: 1, ease: [0.22, 1, 0.36, 1] }
     }),
     center: {
       zIndex: 1,
       x: 0,
       opacity: 1,
       scale: 1,
-      filter: "blur(0px)"
+      filter: "blur(0px)",
+      transition: { duration: 1, ease: [0.22, 1, 0.36, 1] }
     },
     exit: (direction: number) => ({
       zIndex: 0,
-      x: direction < 0 ? '100%' : '-100%',
+      x: direction < 0 ? '50%' : '-50%',
       opacity: 0,
-      scale: 0.95,
-      filter: "blur(10px)"
+      scale: 0.9,
+      filter: "blur(20px)",
+      transition: { duration: 1, ease: [0.22, 1, 0.36, 1] }
     })
   };
 
   return (
     <div className="relative min-h-screen w-full bg-premium-gray font-sans selection:bg-brand-teal/30 selection:text-premium-dark">
+      
+      {/* Noise Texture Overlay */}
+      <div className="fixed inset-0 pointer-events-none z-[140] opacity-[0.03] mix-blend-overlay">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+          </filter>
+          <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+        </svg>
+      </div>
+
+      {/* Progress Bar Superior */}
+      <div className="fixed top-0 left-0 right-0 h-1 z-[150] bg-white/10">
+        <motion.div 
+          animate={{ width: `${progress}%` }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="h-full bg-brand-teal shadow-[0_0_10px_rgba(19,112,103,0.5)]"
+        />
+      </div>
       {currentPage === "catalog" ? (
         <div key="catalog" className="min-h-screen w-full relative">
           {/* Navegação Lateral (Dots) - Ocultar no scroll para limpar a lateral */}
@@ -1788,7 +2064,7 @@ export default function App() {
           {/* Copyright Discreto */}
           <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[110] opacity-30">
             <p className="text-[8px] md:text-[10px] text-premium-dark tracking-[0.4em] uppercase whitespace-nowrap">
-              © 2026 Haja Clean • Catálogo Digital Corporativo
+              Haja Clean Facilities services 2026 © Todos os direitos Reservados
             </p>
           </div>
         </div>

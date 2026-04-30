@@ -24,7 +24,11 @@
 }
 
 .glass {
-  @apply bg-white/40 backdrop-blur-xl border border-white/20 shadow-2xl;
+  @apply bg-white/40 backdrop-blur-2xl border border-white/40 shadow-[0_20px_50px_rgba(0,0,0,0.05)];
+}
+
+.glass-premium {
+  @apply bg-white/10 backdrop-blur-3xl border border-white/20 shadow-2xl;
 }
 
 .glass-dark {
@@ -44,4 +48,19 @@
 }
 ::-webkit-scrollbar-thumb {
   @apply bg-brand-teal/40 rounded-full hover:bg-brand-teal/60 transition-colors;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite linear;
+}
+
+html {
+  scroll-behavior: smooth;
 }
