@@ -1526,7 +1526,7 @@ const ContactPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 <Mail className="w-10 h-10 text-brand-teal" />
               </div>
               <span className="text-xs text-brand-teal font-black uppercase tracking-[0.5em] mb-4">E-mail Corporativo</span>
-              <span className="text-2xl md:text-4xl font-display font-bold text-white group-hover:text-brand-teal transition-colors break-all">
+              <span className="text-base md:text-4xl font-display font-bold text-white group-hover:text-brand-teal transition-colors whitespace-nowrap overflow-hidden text-ellipsis px-2">
                 comercial@hajaclean.com.br
               </span>
             </motion.div>
