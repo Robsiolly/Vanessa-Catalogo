@@ -183,7 +183,7 @@ const ClinicCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             </svg>
           </div>
           <div className="flex flex-col">
-            <span className="text-xs md:text-sm font-bold text-brand-coral leading-none">Haja Clean</span>
+            <span className="text-xs md:text-sm font-bold text-brand-coral leading-tight">Haja Clean</span>
             <span translate="no" className="text-[6px] md:text-[8px] tracking-widest text-[#137067] font-bold notranslate">Facilities Services</span>
           </div>
         </div>
@@ -517,7 +517,7 @@ const GymCleaningPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             </svg>
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-bold text-brand-coral leading-none">Haja Clean</span>
+            <span className="text-sm font-bold text-brand-coral leading-tight">Haja Clean</span>
             <span translate="no" className="text-[8px] tracking-widest text-[#137067] font-bold notranslate">Facilities Services</span>
           </div>
         </div>
@@ -832,7 +832,7 @@ const Header = ({ isScrolled }: { isScrolled: boolean }) => {
           </svg>
         </motion.div>
         <div className={`flex flex-col transition-all duration-700 ${isScrolled ? "opacity-0 w-0 overflow-hidden" : "opacity-100"}`}>
-          <h1 className="text-[12px] md:text-base font-serif font-bold tracking-tight text-brand-coral leading-none">
+          <h1 className="text-[12px] md:text-base font-serif font-bold tracking-tight text-brand-coral leading-tight">
             Haja Clean
           </h1>
           <span translate="no" className="text-[6px] md:text-[9px] tracking-[0.2em] md:tracking-[0.3em] text-brand-teal font-bold mt-0.5 md:mt-1 notranslate uppercase">
@@ -921,9 +921,9 @@ const HeroSection = ({ onNext }: { onNext: () => void }) => {
             />
           </div>
 
-          <h2 className="text-5xl md:text-7xl lg:text-9xl font-serif font-bold text-white tracking-tighter leading-[0.9] flex flex-wrap justify-center gap-x-6">
+          <h2 className="text-5xl md:text-7xl lg:text-9xl font-serif font-bold text-white tracking-tighter leading-tight flex flex-wrap justify-center gap-x-6">
             {"HAJA CLEAN".split(" ").map((word, i) => (
-              <span key={i} className="overflow-hidden inline-block">
+              <span key={i} className="overflow-hidden inline-block pb-4">
                 <motion.span
                   initial={{ y: "100%" }}
                   animate={{ y: 0 }}
@@ -1355,7 +1355,7 @@ const ProductsPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             </svg>
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-bold text-brand-coral leading-none">Haja Clean</span>
+            <span className="text-sm font-bold text-brand-coral leading-tight">Haja Clean</span>
             <span translate="no" className="text-[8px] tracking-widest text-[#137067] font-bold notranslate">Facilities Services</span>
           </div>
         </div>
@@ -1519,7 +1519,7 @@ const ProductsPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           </div>
         </div>
         <footer className="w-full py-12 flex flex-col items-center border-t border-gray-100 mt-20">
-          <p className="text-gray-400 text-[10px] tracking-[0.4em] uppercase text-center px-6">Haja Clean Facilities services 2026 © Todos os direitos Reservados</p>
+          <p className="text-gray-400 text-[7px] md:text-[9px] tracking-[0.3em] md:tracking-[0.4em] uppercase text-center px-6">Haja Clean Facilities services 2026 © Todos os direitos Reservados</p>
         </footer>
       </div>
     </motion.div>
@@ -1691,7 +1691,7 @@ const AboutPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         </section>
 
         <footer className="w-full py-32 flex flex-col items-center border-t border-white/5">
-          <p className="text-white/10 text-[8px] md:text-[10px] tracking-[0.4em] uppercase text-center px-6">Haja Clean Facilities services 2026 © Todos os direitos Reservados</p>
+          <p className="text-white/40 text-[7px] md:text-[9px] tracking-[0.3em] md:tracking-[0.4em] uppercase text-center px-6">Haja Clean Facilities services 2026 © Todos os direitos Reservados</p>
         </footer>
       </div>
     </motion.div>
@@ -1717,7 +1717,7 @@ const ContactPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             <img src="/logo.jpeg" alt="Logo Haja Clean" className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-col text-white">
-            <span className="text-sm font-bold text-brand-coral leading-none">Haja Clean</span>
+            <span className="text-sm font-bold text-brand-coral leading-tight">Haja Clean</span>
             <span translate="no" className="text-[8px] tracking-widest text-brand-teal font-bold notranslate uppercase leading-none mt-1">Contato</span>
           </div>
         </div>
@@ -1795,7 +1795,7 @@ const ContactPage: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         </div>
       </main>
       <footer className="mt-auto py-12 flex flex-col items-center border-t border-white/5">
-        <p className="text-white/20 text-[10px] tracking-[0.5em] uppercase text-center px-6">Haja Clean Facilities services 2026 © Todos os direitos Reservados</p>
+        <p className="text-white/40 text-[7px] md:text-[9px] tracking-[0.3em] md:tracking-[0.5em] uppercase text-center px-6">Haja Clean Facilities services 2026 © Todos os direitos Reservados</p>
       </footer>
     </motion.div>
   );
@@ -2062,8 +2062,8 @@ export default function App() {
           </main>
 
           {/* Copyright Discreto */}
-          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[110] opacity-30">
-            <p className="text-[8px] md:text-[10px] text-premium-dark tracking-[0.4em] uppercase whitespace-nowrap">
+          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[110] w-full max-w-[90vw] flex justify-center">
+            <p className="text-[7px] md:text-[9px] text-gray-400 tracking-[0.2em] md:tracking-[0.4em] uppercase text-center">
               Haja Clean Facilities services 2026 © Todos os direitos Reservados
             </p>
           </div>
