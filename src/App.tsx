@@ -1701,7 +1701,7 @@ export default function App() {
                 initial={{ opacity: 0, x: '100%' }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: '100%' }}
-                className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-3xl flex flex-col p-8"
+                className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-3xl flex flex-col p-8 lg:hidden"
               >
                 <div className="flex justify-between items-center mb-16">
                   <div className="flex items-center gap-3">
