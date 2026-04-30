@@ -1629,8 +1629,10 @@ export default function App() {
             </div>
           )}
 
-          {/* Botões de Navegação Laterais - Ajustar Z-index */}
-          <div className="fixed top-[160px] left-0 right-0 pointer-events-none z-[100] flex items-center justify-between px-6 md:px-12">
+          {/* Botões de Navegação Laterais - Afastar do menu no scroll */}
+          <div className={`fixed top-[160px] left-0 right-0 pointer-events-none z-[100] flex items-center justify-between transition-all duration-700 ${
+            isScrolled ? "px-12 md:px-24" : "px-6 md:px-12"
+          }`}>
             {currentSection > 0 ? (
               <motion.button
                 initial={{ opacity: 0, x: -20 }}
@@ -1659,7 +1661,7 @@ export default function App() {
             layout
             className={`fixed z-[120] transition-all duration-700 ease-in-out hidden lg:flex ${
               isScrolled 
-                ? "top-1/2 right-4 -translate-y-1/2 flex-col" 
+                ? "top-1/2 right-2 -translate-y-1/2 flex-col" 
                 : "top-6 left-0 right-0 justify-center"
             }`}
           >
