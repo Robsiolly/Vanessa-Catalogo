@@ -1656,41 +1656,23 @@ export default function App() {
             )}
           </div>
 
-          {/* NAVEGAÇÃO DESKTOP (CENTRALIZADA -> VERTICAL NO SCROLL) */}
+          {/* NAVEGAÇÃO DESKTOP (SEMPRE HORIZONTAL) */}
           <motion.div 
             layout
-            className={`fixed z-[120] transition-all duration-700 ease-in-out hidden lg:flex ${
-              isScrolled 
-                ? "top-1/2 right-4 -translate-y-1/2" 
-                : "top-6 left-0 right-0 justify-center"
-            }`}
+            className="fixed top-6 left-0 right-0 z-[120] hidden lg:flex justify-center px-6"
           >
             <motion.nav 
               layout
-              className={`bg-white/40 backdrop-blur-3xl border border-white/40 shadow-2xl flex transition-all duration-700 ${
-                isScrolled 
-                  ? "flex-col gap-3 p-2 rounded-2xl w-14 items-center" 
-                  : "flex-row gap-1 p-1.5 rounded-[2.5rem]"
-              }`}
+              className="bg-white/40 backdrop-blur-2xl border border-white/40 shadow-2xl rounded-full p-1.5 flex flex-row gap-1 items-center"
             >
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => setCurrentPage(item.id as Page)}
-                  className={`flex items-center justify-center rounded-full hover:bg-white/60 transition-all group relative ${
-                    isScrolled ? "w-10 h-10" : "px-4 py-2.5"
-                  }`}
-                  title={item.label}
+                  className="flex items-center justify-center rounded-full hover:bg-white/60 transition-all px-4 py-2.5 gap-2 group"
                 >
-                  <item.icon className={`text-brand-teal transition-all ${isScrolled ? "w-5 h-5" : "w-4 h-4"}`} />
-                  {!isScrolled && (
-                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-premium-dark ml-2">{item.label}</span>
-                  )}
-                  {isScrolled && (
-                    <div className="absolute right-full mr-4 px-3 py-1.5 bg-premium-dark text-white text-[9px] font-bold uppercase tracking-widest rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-all duration-300 whitespace-nowrap shadow-2xl border border-white/10 translate-x-2 group-hover:translate-x-0">
-                      {item.label}
-                    </div>
-                  )}
+                  <item.icon className="w-4 h-4 text-brand-teal" />
+                  <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-premium-dark">{item.label}</span>
                 </button>
               ))}
             </motion.nav>
