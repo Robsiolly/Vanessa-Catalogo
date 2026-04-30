@@ -1548,11 +1548,11 @@ export default function App() {
   const totalSections = 3;
 
   const navItems = [
-    { id: "about", label: "Sobre", icon: Users },
     { id: "products", label: "Produtos", icon: Sparkles },
     { id: "gym-cleaning", label: "Academia", icon: Dumbbell },
     { id: "clinic-cleaning", label: "Clínicas", icon: Stethoscope },
     { id: "contact", label: "Contatos", icon: Phone },
+    { id: "about", label: "Sobre", icon: Users },
   ];
 
   const paginate = (newDirection: number) => {
