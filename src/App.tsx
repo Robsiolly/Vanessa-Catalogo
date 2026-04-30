@@ -1610,25 +1610,27 @@ export default function App() {
     <div className="relative min-h-screen w-full bg-premium-gray font-sans selection:bg-brand-teal/30 selection:text-premium-dark">
       {currentPage === "catalog" ? (
         <div key="catalog" className="min-h-screen w-full relative">
-          {/* Navegação Lateral (Dots) */}
-          <div className="fixed right-8 top-1/2 -translate-y-1/2 z-[110] hidden md:flex flex-col gap-5">
-            {[0, 1, 2].map((i) => (
-              <button
-                key={i}
-                onClick={() => {
-                  setDirection(i > currentSection ? 1 : -1);
-                  setCurrentSection(i);
-                }}
-                className={`w-3 h-3 rounded-full transition-all duration-500 ${
-                  currentSection === i ? 'bg-brand-teal scale-150 shadow-[0_0_15px_rgba(19,112,103,0.6)]' : 'bg-premium-dark/20 hover:bg-brand-teal/40'
-                }`}
-                aria-label={`Ir para seção ${i + 1}`}
-              />
-            ))}
-          </div>
+          {/* Navegação Lateral (Dots) - Ocultar no scroll para limpar a lateral */}
+          {!isScrolled && (
+            <div className="fixed right-8 top-1/2 -translate-y-1/2 z-[110] hidden md:flex flex-col gap-5">
+              {[0, 1, 2].map((i) => (
+                <button
+                  key={i}
+                  onClick={() => {
+                    setDirection(i > currentSection ? 1 : -1);
+                    setCurrentSection(i);
+                  }}
+                  className={`w-3 h-3 rounded-full transition-all duration-500 ${
+                    currentSection === i ? 'bg-brand-teal scale-150 shadow-[0_0_15px_rgba(19,112,103,0.6)]' : 'bg-premium-dark/20 hover:bg-brand-teal/40'
+                  }`}
+                  aria-label={`Ir para seção ${i + 1}`}
+                />
+              ))}
+            </div>
+          )}
 
-          {/* Botões de Navegação Laterais */}
-          <div className="fixed top-[160px] left-0 right-0 pointer-events-none z-[105] flex items-center justify-between px-6 md:px-12">
+          {/* Botões de Navegação Laterais - Ajustar Z-index */}
+          <div className="fixed top-[160px] left-0 right-0 pointer-events-none z-[100] flex items-center justify-between px-6 md:px-12">
             {currentSection > 0 ? (
               <motion.button
                 initial={{ opacity: 0, x: -20 }}
@@ -1653,40 +1655,42 @@ export default function App() {
           </div>
 
           {/* NAVEGAÇÃO DESKTOP (CENTRALIZADA -> VERTICAL NO SCROLL) */}
-          <div className={`fixed z-[120] transition-all duration-700 ease-in-out hidden lg:flex ${
-            isScrolled 
-              ? "top-1/2 right-6 -translate-y-1/2 flex-col" 
-              : "top-6 left-0 right-0 justify-center"
-          }`}>
-            <nav className={`bg-white/40 backdrop-blur-2xl border border-white/40 shadow-2xl rounded-[2.5rem] p-2 flex transition-all duration-700 ${
-              isScrolled ? "flex-col gap-4" : "flex-row gap-2"
-            }`}>
+          <motion.div 
+            layout
+            className={`fixed z-[120] transition-all duration-700 ease-in-out hidden lg:flex ${
+              isScrolled 
+                ? "top-1/2 right-4 -translate-y-1/2 flex-col" 
+                : "top-6 left-0 right-0 justify-center"
+            }`}
+          >
+            <motion.nav 
+              layout
+              className={`bg-white/40 backdrop-blur-2xl border border-white/40 shadow-2xl rounded-[2.5rem] p-1.5 flex transition-all duration-700 ${
+                isScrolled ? "flex-col gap-2" : "flex-row gap-1"
+              }`}
+            >
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => setCurrentPage(item.id as Page)}
                   className={`flex items-center gap-3 rounded-full hover:bg-white/60 transition-all group ${
-                    isScrolled ? "p-4" : "px-4 py-2.5"
+                    isScrolled ? "p-3" : "px-4 py-2.5"
                   }`}
                   title={item.label}
                 >
-                  <item.icon className="w-4 h-4 text-brand-teal" />
+                  <item.icon className={`text-brand-teal transition-all ${isScrolled ? "w-5 h-5" : "w-4 h-4"}`} />
                   {!isScrolled && (
                     <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-premium-dark">{item.label}</span>
                   )}
                   {isScrolled && (
-                    <motion.span 
-                      initial={{ opacity: 0, x: 10 }}
-                      whileHover={{ opacity: 1, x: 0 }}
-                      className="absolute right-full mr-4 px-3 py-1 bg-premium-dark text-white text-[8px] uppercase tracking-widest rounded opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity whitespace-nowrap"
-                    >
+                    <div className="absolute right-full mr-4 px-3 py-1 bg-premium-dark text-white text-[8px] uppercase tracking-widest rounded opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-xl border border-white/10">
                       {item.label}
-                    </motion.span>
+                    </div>
                   )}
                 </button>
               ))}
-            </nav>
-          </div>
+            </motion.nav>
+          </motion.div>
 
           {/* BOTÃO HAMBÚRGUER MOBILE/TABLET (CANTO DA TELA) */}
           <div className="fixed top-6 right-6 z-[120] lg:hidden">
